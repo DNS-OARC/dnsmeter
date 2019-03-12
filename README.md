@@ -34,19 +34,23 @@ make uninstall
 "dnspecker -h" shows help
 
 **-q HOST | -s NETWORK**
+
 Source IP, hostname or network from which the packets should be send. If you dont't want to spoof,
 use -q with a single IP address or hostname. Use -s followed by a network, if you want to spoof
 the source address. dnspecker will generated random IP addresses inside this network.
 Example: -s 10.0.0.0/8
 
 **-e ETH**
+
 Ignored on Linux, but on FreeBSD you have to enter the name of the network interface on which the
 tool should listen for the answers.
 
 **-z HOST:PORT**
+
 Hostname or IP and Port of the target nameserver
 
 **-p FILE**
+
 File with payload in text format. Each line must contain one query with name and record type.
 Example:
 
@@ -58,12 +62,15 @@ Attention: the file should not be too big, because it is completely loaded into 
 precompiled to DNS query packets. In my tests I used a 180 MB file with over 8000000 queries.
 
 **[-l #]**
+
 runtime for each load step, default=10 seconds
 
 **[-t #]**
+
 time to wait for answers after each load step. default=2 seconds
 
 **[-n #]**
+
 number of worker threads, default=1
 Recommendation:
   - < 200000 packets per second: 1 Thread
@@ -73,7 +80,8 @@ Attention: this is CPU dependent! If you have a fast CPU, you may need lesser th
 on a slow CPU you may need more threads. Dont't use more threads than cores available on your CPU,
 minus one!
 
-**[-r #[,#,#]]**	
+**[-r #[,#,#]]**
+
 queryrate or load steps. Can be a single value if you want to test a specific queryrate, a comma
 separated list or a range with step with. Default: as much as possible.
 
@@ -83,9 +91,11 @@ Examples:
   - a range with step: -r 10000-200000,10000
 
 **[-d #]**
+
 Amount of DNSSEC queries in percentage between 0 and 100. Default=0
 
 **[-c FILENAME]**
+
 Filname for results in CSV format.
 
 Attention: if file exists, results are appended!
