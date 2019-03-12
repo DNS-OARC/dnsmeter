@@ -329,7 +329,7 @@ int DNSSender::main(int argc, char**argv)
 			try {
 				Receiver->setInterface(InterfaceName);
 			} catch (const ppl7::Exception &e) {
-				printf ("ERROR: Konnte nicht an Device binden [%s]\n",(const char*)InterfaceName);
+				printf ("ERROR: could not bind on device [%s]\n",(const char*)InterfaceName);
 				e.print();
 				printf ("\n");
 				help();
@@ -454,7 +454,7 @@ void DNSSender::run(int queryrate)
 	sampleSensorData(sys2);
 	if (stopFlag==true) {
 		threadpool.stopThreads();
-		throw ppl7::OperationInterruptedException("Lasttest wurde abgebrochen");
+		throw ppl7::OperationInterruptedException("test aborted");
 	}
 }
 
@@ -514,7 +514,7 @@ void DNSSender::presentResults(const DNSSender::Results &result)
 	const SystemStat::Interface &net2=sys2.interfaces[InterfaceName];
 	SystemStat::Network transmit=SystemStat::Network::getDelta(net1.transmit, net2.transmit);
 	SystemStat::Network received=SystemStat::Network::getDelta(net1.receive, net2.receive);
-	printf ("Netzwerk If %s Pkt send: %lu, rcv: %lu, Data send: %lu KB, rcv: %lu KB\n",
+	printf ("network if %s Pkt send: %lu, rcv: %lu, Data send: %lu KB, rcv: %lu KB\n",
 			(const char*)InterfaceName,
 			transmit.packets, received.packets, transmit.bytes/1024, received.bytes/1024);
 

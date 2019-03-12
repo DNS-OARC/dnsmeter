@@ -153,7 +153,7 @@ void DNSSenderThread::sendPacket()
 
 void DNSSenderThread::run()
 {
-	if (!payload) throw ppl7::NullPointerException("payload nicht gesetzt!");
+	if (!payload) throw ppl7::NullPointerException("payload not set!");
 	if (!spoofingEnabled) {
 		pkt.setSource(sourceip,0x4567);
 	}
@@ -210,7 +210,7 @@ void DNSSenderThread::runWithRateLimit()
 	verbose=true;
 	if (verbose) {
 		//printf ("qps=%d, runtime=%d\n",queryrate, runtime);
-		printf ("Laufzeit: %d s, Dauer Zeitscheibe: %0.6f s, Zeitscheiben total: %llu, Qpzs: %llu, Source: %s:%d\n",
+		printf ("runtime: %d s, timeslice: %0.6f s, total timeslices: %llu, Qpts: %llu, Source: %s:%d\n",
 				runtime,Zeitscheibe,total_zeitscheiben,
 				queries_rest/total_zeitscheiben,
 				(const char*)addr.toIPAddress().toString(), addr.port());

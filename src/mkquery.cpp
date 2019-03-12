@@ -63,7 +63,6 @@ int MakeQuery(const ppl7::String &query, unsigned char *buffer, size_t buffersiz
 		}
 		t++;
 	}
-	//printf ("unknown rrtype: >>%s<<\n",(const char*)tok[1]);
 	throw UnknownRRType(tok[1]);
 }
 
