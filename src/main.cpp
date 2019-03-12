@@ -25,21 +25,8 @@ static const char *rcode_names[] = {
 
 
 
-/*!\brief Stop-Flag
- *
- * Wird vom Signal-Handler sighandler gesetzt, wenn das Programm beendet werden soll.
- *
- */
 bool stopFlag=false;
 
-/*!\brief Signal-Handler
- *
- * Wird aufgerufen, wenn dem Programm ein Kill-Signal geschickt wird oder in der Konsole
- * Ctrl-C gedrückt wird. Er setzt die globale Variable stopFlag auf True, wodurch
- * Hauptthread und Workerthreads sich beenden.
- *
- * @param sig Art des Signals
- */
 void sighandler(int sig)
 {
 	stopFlag=true;
@@ -64,15 +51,6 @@ double getQueryRTT(unsigned short start)
 }
 
 
-/*!\brief Hauptfunktion
- *
- * Einsprungspunkt des Programms. Erstellt eine Instanz von UDPSender und ruft
- * UDPSender::main auf.
- *
- * @param argc Anzahl Kommandozeilenparameter
- * @param argv Liste mit char-Pointern auf die Kommandozeilenparameter
- * @return Gibt 0 zurück, wenn alles in Ordnung war, 1 wenn ein Fehler aufgetreten ist
- */
 int main(int argc, char**argv)
 {
 	res_init();
@@ -85,10 +63,6 @@ int main(int argc, char**argv)
 }
 
 
-/*!\brief Hilfe anzeigen
- *
- * Zeigt die Hilfe für die Konsolenparameter an.
- */
 void DNSSender::help()
 {
 	printf ("Usage:\n"
@@ -196,14 +170,7 @@ DNSSender::~DNSSender()
 	if (Receiver) delete Receiver;
 }
 
-/*!\brief Liste der zu testenden Queryrates erstellen
- *
- * In abhängigkeit des Wertes des Kommandozeilenparameters -r wird eine Liste
- * der zu testenden Queryraten erstellt.
- *
- * @param QueryRates String mit Wert des Kommandozeilenparameters -r
- * @return Liste mit den Queryraten
- */
+
 ppl7::Array DNSSender::getQueryRates(const ppl7::String &QueryRates)
 {
 	ppl7::Array rates;
@@ -339,15 +306,6 @@ int DNSSender::openFiles()
 }
 
 
-/*!\brief Hauptfunktion
- *
- * Wertet die Kommandozeilenparameter aus, bereitet die Workerthreads vor und
- * arbeitet die gewünschten Laststufen ab.
- *
- * @param argc Anzahl Kommandozeilenparameter
- * @param argv Liste mit char-Pointern auf die Kommandozeilenparameter
- * @return Gibt 0 zurück, wenn alles in Ordnung war, 1 wenn ein Fehler aufgetreten ist
- */
 int DNSSender::main(int argc, char**argv)
 {
 	if (ppl7::HaveArgv(argc,argv,"-h") || ppl7::HaveArgv(argc,argv,"--help")) {
@@ -396,11 +354,6 @@ int DNSSender::main(int argc, char**argv)
 	return 0;
 }
 
-/*!\brief Workerthreads erstellen und konfigurieren
- *
- * Die gewünschte Anzahl Workerthreads werden erstellt, konfiguriert und in
- * den ThreadPool gestellt.
- */
 void DNSSender::prepareThreads()
 {
 	for (int i=0;i<ThreadCount;i++) {
@@ -421,15 +374,6 @@ void DNSSender::prepareThreads()
 	}
 }
 
-/*!\brief CSV-File öffnen oder anlegen
- *
- * Öffnet eine Datei, in die das Testergebnis als Kommaseparierte Liste
- * geschrieben werden soll. Falls diese Datei noch nicht vorhanden war, wird
- * sie angelegt und ein Header mit der Beschreibung der Spalten hineingeschrieben.
- * @param Filename String mit dem Dateinamen
- * @exception Diverse Es können diverse Exceptions georfen werden, falls die Datei
- * nicht geöffnet doer beschrieben werden kann.
- */
 void DNSSender::openCSVFile(const ppl7::String &Filename)
 {
 	CSVFile.open(Filename,ppl7::File::APPEND);
@@ -471,12 +415,6 @@ void DNSSender::calcZeitscheibe(int queryrate)
 }
 
 
-/*!\brief Last generieren
- *
- * Konfiguriert die Workerthreads mit der gewünschten Last \p queryrate, startet sie und wartet,
- * bis sie sich wieder beendet haben.
- * @param queryrate gewünschte Queryrate
- */
 void DNSSender::run(int queryrate)
 {
 	printf ("###############################################################################\n");
@@ -517,13 +455,7 @@ void DNSSender::run(int queryrate)
 	}
 }
 
-/*!\brief Ergebnisse sammeln und berechnen
- *
- * Sammelt die Ergebnisse der Workerthreads und berechnet das Gesamtergebnis für einen
- * Testlauf.
- *
- * @param result Datenobjekt zur Aufnahme der Ergebniswerte
- */
+
 void DNSSender::getResults(DNSSender::Results &result)
 {
 	ppl7::ThreadPool::iterator it;
@@ -553,13 +485,7 @@ void DNSSender::getResults(DNSSender::Results &result)
 	if (result.counter_received>result.counter_send) result.packages_lost=0;
 }
 
-/*!\brief Ergebnisse in eine Datei schreiben
- *
- * Prüft, ob eine CSV-Datei geöffnet ist und schreibt, wenn dies der Fall ist, die Werte
- * aus dem Ergebnisobjekt \p result als kommaseparierte Liste in die Datei.
- *
- * @param result Datenobjekt mit den Ergebniswerten
- */
+
 void DNSSender::saveResultsToCsv(const DNSSender::Results &result)
 {
 
@@ -577,12 +503,7 @@ void DNSSender::saveResultsToCsv(const DNSSender::Results &result)
 	}
 }
 
-/*!\brief Ergebnisse auf der Konsole ausgeben
- *
- * Gibt die Werte aus dem Datenobjekt \p result auf der Konsole aus.
- *
- * @param result Datenobjekt mit den Ergebniswerten
- */
+
 void DNSSender::presentResults(const DNSSender::Results &result)
 {
 	printf ("===============================================================================\n");

@@ -14,10 +14,7 @@
 
 #include "dnspecker.h"
 
-/*!\brief Konstruktor
- *
- * Einige interne Variablen werden mit dem Default-Wert befüllt.
- */
+
 DNSSenderThread::DNSSenderThread()
 {
 	buffer=(unsigned char*)malloc(4096);
@@ -41,20 +38,14 @@ DNSSenderThread::DNSSenderThread()
 	spoofing_net_size=0;
 }
 
-/*!\brief Destruktor
- *
- * Stoppt den ReceiverThread (sofern er noch läuft) und schließt den Socket.
- */
+
 DNSSenderThread::~DNSSenderThread()
 {
 	free(buffer);
 }
 
 
-/*!\brief Zieladresse setzen
- *
- * @param destination String mit Zieladresse und Port
- */
+
 void DNSSenderThread::setDestination(const ppl7::IPAddress &ip, int port)
 {
 	Socket.setDestination(ip, port);
@@ -67,24 +58,13 @@ void DNSSenderThread::setPayload(PayloadFile &payload)
 	this->payload=&payload;
 }
 
-/*!\brief Laufzeit festlegen
- *
- * Legt die Laufzeit für den Testlauf fest.
- *
- * @param seconds Laufzeit
- */
+
 void DNSSenderThread::setRuntime(int seconds)
 {
 	runtime=seconds;
 }
 
-/*!\brief Timeout setzen
- *
- * Setzt den Timeout für den Lasttest. Nachdem die Laufzeit für das Senden von Paketen abgelaufen ist,
- * wird noch \seconds Sekunden auf rückkehrende Pakete gewartet.
- *
- * @param seconds Timeout
- */
+
 void DNSSenderThread::setTimeout(int seconds)
 {
 	timeout=seconds;
@@ -95,32 +75,13 @@ void DNSSenderThread::setDNSSECRate(int rate)
 	DnssecRate=rate;
 }
 
-/*!\brief Gewünschte Query-Rate pro Sekunde einstellen
- *
- * Ein Wert > 0 aktiviert das Rate-Limiting. Der Sender versucht die gewünschte Anzahl Pakete
- * gleichmäßig auf die Sekunde zu verteilen. Dazu werden Zeitscheiben verwendet, deren Dauer
- * mit der Methode SenderThread::setZeitscheibe konfiguriert werden kann.
- *
- * @param qps Queries pro Sekunde
- */
+
 void DNSSenderThread::setQueryRate(ppluint64 qps)
 {
 	queryrate=qps;
 }
 
-/*!\brief Dauer einer Zeitscheibe bei aktiviertem Rate-Limit einstellen
- *
- * Legt die Dauer einer Zeitscheibe bei aktiviertem Rate-Limit fest. Dabei werden die zu
- * sendenen Pakete pro Sekunde gleichmäßig auf alle Zeitscheiben in der Sekunde verteilt.
- *
- * Der Wert muss mindestens 1 sein (=Default), maximal 1000. Ferner muss der Wert von
- * 1000 teilbar sein.
- *
- * @param ms Dauer einer Zeitscheibe in Millisekunden
- *
- * @exception ppl7::InvalidArgumentsException Wird geworfen, wenn der Wert \p ms nicht den
- * genannten kriterien entspricht.
- */
+
 void DNSSenderThread::setZeitscheibe(float ms)
 {
 	if (ms==0.0f || ms >1000.0f) throw ppl7::InvalidArgumentsException();
@@ -149,13 +110,7 @@ void DNSSenderThread::setVerbose(bool verbose)
 }
 
 
-/*!\brief Einzelnes Paket senden
- *
- * Generiert ein neues Paket. Die ersten 8 Byte enthalten dabei eine eindeutige fortlaufende
- * ID, die nächsten 8 Byte einen Wert in Double-Precision mit der aktuellen, mikrosekunden genauen
- * Uhrzeit des Servers. Anhand der Uhrzeit kann die Laufzeit eines rückkehrenden Pakets berechnet
- * werden.
- */
+
 void DNSSenderThread::sendPacket()
 {
 	ppl7::ByteArrayPtr bap;
@@ -196,15 +151,6 @@ void DNSSenderThread::sendPacket()
 
 
 
-/*!\brief Worker-Thread
- *
- * Diese Methode ist der Einstiegspunkt fuer den Workerthread. Hier wird der Socket initialisiert
- * und mit dem Ziel "connected". Sofern Antwortpakete nicht ignoriert werden sollen, wird noch
- * der ReceiverThread gestartet und dann die Last. Jenachdem, ob ein Ratelimit angegeben
- * wurde oder nicht, wird entweder die Methode SenderThread::runWithRateLimit oder SenderThread::runWithoutRateLimit
- * aufgerufen. Nach Ablauf der Laufzeit wird dann noch die Methode SenderThread::waitForTimeout
- * aufgerufen, bevor der Socket wieder geschlossen wird.
- */
 void DNSSenderThread::run()
 {
 	if (!payload) throw ppl7::NullPointerException("payload nicht gesetzt!");
@@ -229,10 +175,7 @@ void DNSSenderThread::run()
 }
 
 
-/*!\brief Generiert und empfängt soviele Pakete wie möglich
- *
- * In einer Endlosschleife werden permanent Pakete generiert und versenden.
- */
+
 void DNSSenderThread::runWithoutRateLimit()
 {
 	double start=ppl7::GetMicrotime();
@@ -251,13 +194,6 @@ void DNSSenderThread::runWithoutRateLimit()
 	}
 }
 
-/*!\brief Nanosekundengenaue Uhrzeit auslesen
- *
- * Verwendet die Realtime-Uhr des Betriebssystems um die nanosekundengenaue
- * Uhrzeit auszulesen.
- * @return Uhrzeit als Gleitkommazahl. Die Vorkommastellen enthalten die Sekunden seit
- * Epoch, die Nachkommastellen die Nanosekunden.
- */
 static inline double getNsec()
 {
 	struct timespec ts;
@@ -265,20 +201,6 @@ static inline double getNsec()
 	return (double)ts.tv_sec+((double)ts.tv_nsec/1000000000.0);
 }
 
-/*!\brief Generiert eine gewünschte Anzahl Pakete pro Sekunde
- *
- * In einer Endlosschleife werden Pakete generiert und versendet.
- * Um die gewünschte Queryrate zu erreichen, wird die Laufzeit in Zeitscheiben unterteilt und berechnet,
- * wieviele Pakete pro Zeitscheibe versendet werden müssen.
- *
- * \see SenderThread::setRuntime Setzen der Laufzeit
- * \see SenderThread::setQueryRate Setzen der Queryrate
- * \see SenderThread::setZeitscheibe Setzen der Länge einer Zeitscheibe
- *
- * \note Falls das Senden der Pakete länger als die Zeitscheibe dauert, kann die gewünschte Queryrate
- * nicht erreichtwerden. Es liegt ein Bottleneck auf dem Lastgenerator vor. Dies dürfte in der Regel die
- * CPU sein.
- */
 void DNSSenderThread::runWithRateLimit()
 {
 	struct timespec ts;
@@ -333,12 +255,6 @@ void DNSSenderThread::runWithRateLimit()
 }
 
 
-/*!\brief Wartet solange auf rückkehrende Pakete, bis der Timeout erreicht ist
- *
- * Diese Methode wird aufgerufen, nachdem das Senden der Pakete beendet wurde. Sie wartet
- * noch solange auf rückkehrende Pakete, bis der mittels SenderThread::setTimeout
- * eingestellte Timeout erreicht ist
- */
 void DNSSenderThread::waitForTimeout()
 {
 	double start=ppl7::GetMicrotime();
@@ -353,28 +269,16 @@ void DNSSenderThread::waitForTimeout()
 	}
 }
 
-/*!\brief Anzahl gesendeter Pakete auslesen
- *
- * @return Anzahl Pakete
- */
 ppluint64 DNSSenderThread::getPacketsSend() const
 {
 	return counter_packets_send;
 }
 
-/*!\brief Anzahl gesendeter Bytes auslesen
- *
- * @return Anzahl Bytes
- */
 ppluint64 DNSSenderThread::getBytesSend() const
 {
 	return counter_bytes_send;
 }
 
-/*!\brief Anzahl beim Senden aufgetretener Fehler auslesen
- *
- * @return Anzahl Fehler
- */
 ppluint64 DNSSenderThread::getErrors() const
 {
 	return errors;

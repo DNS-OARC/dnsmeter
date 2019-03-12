@@ -23,20 +23,6 @@ PayloadFile::PayloadFile()
 	validLinesInQueryFile=0;
 }
 
-/*!\brief Query-File öffnen
- *
- * Öffnet eine Datei, in der die zu sendenden Queries stehen. Diese
- * müssen folgendes Format aufweisen:
- * * jeder Zeile enthält eine Abfrage
- * * Query beginnt mit den abzufragenden Daten, gefolgt von 1 x Space, gefolgt
- * vom Record-Typ
- *
- * Beispiel: denic.de NS
- *
- * @param Filename String mit dem Dateinamen
- * @exception Diverse Es können diverse Exceptions georfen werden, falls die Datei
- * nicht geöffnet werden kann.
- */
 void PayloadFile::openQueryFile(const ppl7::String &Filename)
 {
 	if (Filename.isEmpty()) throw InvalidQueryFile("File not given");
