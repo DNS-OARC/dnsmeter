@@ -73,9 +73,9 @@ time to wait for answers after each load step. default=2 seconds
 
 number of worker threads, default=1
 Recommendation:
-  - < 200000 packets per second: 1 Thread
+  - less than 200000 packets per second: 1 Thread
   - 200000 - 500000 packets per second: 2 Threads
-  - > 500000 packets per second: 4 Threads
+  - more than 500000 packets per second: 4 Threads
 Attention: this is CPU dependent! If you have a fast CPU, you may need lesser threads,
 on a slow CPU you may need more threads. Dont't use more threads than cores available on your CPU,
 minus one!
