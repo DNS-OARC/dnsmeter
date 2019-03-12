@@ -1,0 +1,70 @@
+#ifndef __DNSPECKER_CONFIG__
+#define __DNSPECKER_CONFIG__
+
+#undef PACKAGE_VERSION
+#undef PACKAGE_BUGREPORT
+#undef PACKAGE_NAME
+#undef PACKAGE_STRING
+
+#undef MINGW32
+#undef MINGW64
+
+/*
+ * Endianess
+ */
+#undef __BIG_ENDIAN__
+#undef __LITTLE_ENDIAN__
+
+
+/* Features */
+#undef HAVE_TLS
+#undef HAVE_PPL7
+#undef HAVE_PTHREADS
+
+/* Header files */
+#undef HAVE_UNISTD_H
+#undef HAVE_SIGNAL_H
+#undef HAVE_TIME_H
+#undef HAVE_STDLIB_H
+#undef HAVE_STDIO_H
+#undef HAVE_PATH_H
+#undef HAVE_FCTNL_H
+#undef HAVE_KVM_H
+#undef HAVE_IFADDRS_H
+#undef HAVE_LIMITS_H
+#undef HAVE_LOCALE_H
+#undef HAVE_STRING_H
+#undef HAVE_STRINGS_H
+#undef HAVE_STDARG_H
+#undef HAVE_SYSLOG_H
+#undef HAVE_MATH_H
+#undef HAVE_ERRNO_H
+
+#undef HAVE_NETINET_IN_H
+#undef HAVE_NET_IF_H
+
+#undef HAVE_SYS_RESOURCE_H
+#undef HAVE_SYS_SOCKET_H
+#undef HAVE_SYS_SYSCTL_H
+#undef HAVE_SYS_TYPES_H
+#undef HAVE_SYS_SYSINFO_H
+#undef HAVE_SYS_SELECT_H
+#undef HAVE_SYS_POLL_H
+#undef HAVE_SYS_TIME_H
+
+
+/*
+ * Functions
+ */
+#undef HAVE_USLEEP
+#undef HAVE_NANOSLEEP
+#undef HAVE_FCNTL
+#undef HAVE_SIGNAL
+#undef HAVE_SELECT
+#undef HAVE_PSELECT
+#undef HAVE_SYSLOG
+#undef HAVE_OPENLOG
+#undef HAVE_CLOSELOG
+ 
+
+#endif

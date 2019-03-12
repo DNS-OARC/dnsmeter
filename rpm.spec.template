@@ -1,0 +1,51 @@
+################################################################
+# Name:      Spec fuer dnspecker
+# Autor:     Patrick Fedick
+################################################################
+%define name dnspecker
+%define version @VERSION@
+%define release @RPM_RELEASE@
+%define source @SOURCE@
+
+%define myprefix /
+
+Summary: Tool for testing performance of nameserver
+Name: %{name}
+Version: %{version}
+Release: %{release}
+
+License: unknown
+Group: Application
+# URL: 
+
+BuildRoot: %{_tmppath}/%{name}-buildroot
+Prefix: %{myprefix}
+AutoReqProv: yes
+
+%description
+Tool for testing performance of nameserver
+
+%prep
+
+
+%pre
+
+
+%install
+install -d -m 755 $RPM_BUILD_ROOT/usr/bin
+install -m 755 %{source}/dnspecker $RPM_BUILD_ROOT/usr/bin
+
+%post
+
+%preun
+
+
+%clean
+
+
+%files
+%defattr(-,root,root)
+/usr/bin/dnspecker
+
+
+%changelog

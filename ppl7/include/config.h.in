@@ -1,0 +1,466 @@
+/*******************************************************************************
+ * This file is part of "Patrick's Programming Library", Version 7 (PPL7).
+ * Web: http://www.pfp.de/ppl/
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+ *
+ *******************************************************************************
+ * Copyright (c) 2013, Patrick Fedick <patrick@pfp.de>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *    1. Redistributions of source code must retain the above copyright notice, this
+ *       list of conditions and the following disclaimer. 
+ *    2. Redistributions in binary form must reproduce the above copyright notice,
+ *       this list of conditions and the following disclaimer in the documentation
+ *       and/or other materials provided with the distribution. 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER AND CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+ * THE POSSIBILITY OF SUCH DAMAGE.
+ *******************************************************************************/
+ 
+#ifndef _PPL7_CONFIG
+#define _PPL7_CONFIG
+
+#undef PACKAGE_VERSION
+#undef PACKAGE_BUGREPORT
+#undef PACKAGE_NAME
+#undef PACKAGE_STRING
+
+#undef MINGW32
+#undef MINGW64
+#undef HAVE_AMD64
+
+/* Define as 1 if you have unistd.h. */
+#undef HAVE_UNISTD_H
+
+/* Define, if we have Thread Local Space */
+#undef HAVE_TLS
+
+#undef HAVE_MKTIME
+#undef size_t
+#undef wchar_t
+
+#undef HAVE_ALARM
+#undef HAVE_BZERO
+#undef HAVE_FSEEKO
+#undef HAVE_GETHOSTBYNAME
+#undef HAVE_GETTIMEOFDAY
+#undef HAVE_INET_NTOA
+#undef HAVE_INTTYPES_H
+#undef HAVE_MALLOC
+#undef HAVE_MEMMOVE
+#undef HAVE_MEMORY_H
+#undef HAVE_MEMSET
+#undef HAVE_MKDIR
+#undef HAVE_REALLOC
+#undef HAVE_SOCKET
+#undef HAVE_SOCKADDR_SA_LEN
+#undef HAVE_STDARG_H
+#undef HAVE_STDDEF_H
+#undef HAVE_STDBOOL_H
+#undef HAVE_STDIO_H
+#undef HAVE_STDINT_H
+#undef HAVE_STDLIB_H
+#undef HAVE_LOCALE_H
+#undef HAVE_WCHAR_H
+#undef HAVE_WIDEC_H
+#undef HAVE_WCTYPE_H
+#undef HAVE_STRDUP
+#undef HAVE_STRNDUP
+#undef HAVE_STRNCPY
+#undef HAVE_STRLCPY
+#undef HAVE_STRNCAT
+#undef HAVE_STRLCAT
+#undef HAVE_MATH_H
+#undef HAVE_SYSLOG_H
+
+#undef HAVE_STRERROR
+#undef HAVE_STRFTIME
+#undef HAVE_STRINGS_H
+#undef HAVE_STRING_H
+#undef HAVE_STRNCASECMP
+#undef HAVE_STRCASECMP
+#undef HAVE_STRSTR
+#undef HAVE_STRCASESTR
+#undef HAVE_TIME_H
+#undef HAVE_SYS_TIME_H
+#undef HAVE_SYS_TYPES_H
+#undef HAVE_SYS_FILE_H
+#undef HAVE_FCNTL_H
+#undef HAVE_UNISTD_H
+#undef HAVE_ERRNO_H
+#undef HAVE_TIME_H
+#undef HAVE_SYS_SOCKET_H
+#undef HAVE_SYS_POLL_H
+#undef HAVE_NETINET_IN_H
+#undef HAVE_NETDB_H
+#undef HAVE_ARPA_INET_H
+#undef HAVE_SYS_MMAN_H
+#undef HAVE_VALGRIND_HELGRIND_H
+
+#undef HAVE_VPRINTF
+#undef HAVE_ASPRINTF
+#undef HAVE_VASPRINTF
+#undef HAVE___MINGW_VASPRINTF
+#undef HAVE_WORKING_VSNPRINTF
+#undef HAVE__BOOL
+#undef FPOS_T_STRUCT
+#undef HAVE_PCRE
+#undef HAVE_FLOCK
+#undef HAVE_FCNTL
+#undef HAVE_FPUTS
+#undef HAVE_FPUTWS
+#undef HAVE_FGETS
+#undef HAVE_FGETWS
+#undef HAVE_FPUTC
+#undef HAVE_FPUTWC
+#undef HAVE_FGETC
+#undef HAVE_FGETWC
+#undef STRUCT_TM_HAS_GMTOFF
+#undef HAVE_ATOLL
+#undef HAVE_STRTOLL
+#undef HAVE_STRTOULL
+#undef HAVE_SLEEP
+#undef HAVE_NAP
+#undef HAVE_USLEEP
+#undef HAVE_NANOSLEEP
+#undef HAVE_STRTOK_R
+#undef HAVE_SIGNAL
+#undef HAVE_SIGNAL_H
+#undef HAVE_DIRENT_H
+#undef HAVE_FNMATCH_H
+#undef HAVE_SYS_STAT_H
+#undef HAVE_LIMITS_H
+#undef HAVE_STRTOK_R
+#undef HAVE_GETPID
+#undef HAVE_GETPPID
+#undef HAVE_GETUID
+#undef HAVE_GETEUID
+#undef HAVE_LOCALTIME
+#undef HAVE_LOCALTIME_R
+#undef HAVE_GMTIME
+#undef HAVE_GMTIME_R
+#undef HAVE_CTYPE_H
+#undef HAVE_MKSTEMP
+#undef HAVE_WCSCASECMP
+#undef HAVE_WCSNCASECMP
+#undef HAVE_WCSCMP
+#undef HAVE_WCSNCMP
+#undef HAVE_WCSTOL
+#undef HAVE_WCSTOLL
+#undef HAVE_WCSLEN
+#undef HAVE_WCSSTR
+#undef HAVE_WCSTOUL
+#undef HAVE_WCSTOULL
+#undef HAVE_WCSTOMBS
+#undef HAVE_WCSRTOMBS
+#undef HAVE_WCSNRTOMBS
+#undef HAVE_MBSTOWCS
+#undef HAVE_MBSRTOWCS
+#undef HAVE_MBSNRTOWCS
+#undef HAVE_WPRINTF
+#undef HAVE_FWPRINTF
+#undef HAVE_SWPRINTF
+#undef HAVE_VWPRINTF
+#undef HAVE_VFWPRINTF
+#undef HAVE_VSWPRINTF
+#undef HAVE_WCSTOD
+#undef HAVE_WCSTOF
+#undef HAVE_WSTOL
+#undef HAVE_WSTOLL
+#undef HAVE_WATOI
+#undef HAVE_WATOLL
+#undef HAVE_WSTOD
+#undef HAVE_WATOF
+#undef HAVE_TRUNCATE
+#undef HAVE_FTRUNCATE
+#undef HAVE_STRCMP
+#undef HAVE_STRNCMP
+#undef HAVE_STRNLEN
+#undef HAVE_BCOPY
+#undef HAVE_SYNC
+#undef HAVE_FSYNC
+#undef HAVE_MMAP
+#undef HAVE_MUNMAP
+#undef HAVE_PAGESIZE
+#undef HAVE_SYSCONF
+#undef HAVE_STAT
+#undef HAVE_OPENDIR
+#undef HAVE_CLOSEDIR
+#undef HAVE_READDIR
+#undef HAVE_READDIR_R
+#undef HAVE_HTOL
+#undef HAVE_HTOLL
+#undef HAVE_ATOI
+#undef HAVE_ATOL
+#undef HAVE_ATOLL
+#undef HAVE_ATOF
+#undef HAVE_STRTOLOWER
+#undef HAVE_STRTOUPPER
+#undef HAVE_UNLINK
+#undef HAVE_REMOVE
+#undef HAVE_SYSLOG
+#undef HAVE_OPENLOG
+#undef HAVE_CLOSELOG
+
+
+
+#undef HAVE_GETHOSTNAME
+#undef HAVE_SETHOSTNAME
+#undef HAVE_GETDOMAINNAME
+#undef HAVE_SETDOMAINNAME
+#undef HAVE_UNAME
+#undef HAVE_INET_NTOP
+#undef HAVE_INET_PTON
+#undef HAVE_INET_ATON
+#undef HAVE_INET_NTOA
+#undef HAVE_INET_NTOA_R
+#undef HAVE_INET_ADDR
+#undef HAVE_INET_NETWORK
+#undef HAVE_INET_MAKEADDR
+
+#undef HAVE_RESOLV_H
+#undef HAVE_ARPA_NAMESER_H
+
+
+
+#undef _FILE_OFFSET_BITS 64
+
+
+#undef HAVE_LIBLDNS
+#undef HAVE_LIBBIND
+#undef HAVE_RES_QUERY
+#undef HAVE_RES_SEARCH
+#undef HAVE_RES_QUERYDOMAIN
+#undef HAVE_RES_MKQUERY
+#undef HAVE_RES_SEND
+#undef HAVE_DN_COMP
+#undef HAVE_DN_EXPAND
+#undef HAVE_NS_INITPARSE
+
+#undef HAVE_LIBMICROHTTPD
+#undef HAVE_LIBIDN
+#undef HAVE_LIBIDN2
+#undef HAVE_LIBIDN2_IDN2_NO_TR46
+
+
+/*
+ * Cryptography
+ */
+#undef HAVE_OPENSSL
+#undef HAVE_TLS_METHOD
+#undef HAVE_TLS_SERVER_METHOD
+#undef HAVE_TLS_CLIENT_METHOD
+#undef HAVE_SSLV23_METHOD
+#undef HAVE_SSLV23_SERVER_METHOD
+#undef HAVE_SSLV23_CLIENT_METHOD
+
+#undef HAVE_LIBMCRYPT
+#undef HAVE_GCRYPT
+#undef GCRYPT_WITH_AES
+#undef GCRYPT_WITH_ARCFOUR
+#undef GCRYPT_WITH_BLOWFISH
+#undef GCRYPT_WITH_CAST5
+#undef GCRYPT_WITH_DES
+#undef GCRYPT_WITH_IDEA
+#undef GCRYPT_WITH_RFC2268
+#undef GCRYPT_WITH_SERPENT
+#undef GCRYPT_WITH_TWOFISH
+#undef GCRYPT_WITH_CRC
+#undef GCRYPT_WITH_HAVAL
+#undef GCRYPT_WITH_MD2
+#undef GCRYPT_WITH_MD4
+#undef GCRYPT_WITH_MD5
+#undef GCRYPT_WITH_RMD160
+#undef GCRYPT_WITH_SHA0
+#undef GCRYPT_WITH_SHA1
+#undef GCRYPT_WITH_SHA224
+#undef GCRYPT_WITH_SHA256
+#undef GCRYPT_WITH_SHA384
+#undef GCRYPT_WITH_SHA512
+#undef GCRYPT_WITH_TIGER
+#undef GCRYPT_WITH_WHIRLPOOL
+#undef GCRYPT_WITH_DSA
+#undef GCRYPT_WITH_ELGAMAL
+#undef GCRYPT_WITH_RSA
+#undef LIBMCRYPT24
+
+ 
+ 
+ 
+/*
+ * Assembler
+ */
+#undef HAVE_YASM
+#undef HAVE_NASM
+#undef HAVE_X86_ASSEMBLER
+
+/*
+ * Character encoding
+ */
+#undef HAVE_ICONV
+#undef ICONV_CONST
+
+
+/*
+ * Endianess
+ */
+#undef __BIG_ENDIAN__
+#undef __LITTLE_ENDIAN__
+
+/*
+ * Compression
+ */
+
+#undef HAVE_LIBZ
+#undef HAVE_BZIP2
+
+/*
+ * lib curl
+ */
+#undef HAVE_LIBCURL
+#undef LIBCURL_FEATURE_SSL
+#undef LIBCURL_FEATURE_IPV6
+#undef LIBCURL_FEATURE_LIBZ
+#undef LIBCURL_FEATURE_ASYNCHDNS
+#undef LIBCURL_FEATURE_GSS_API
+#undef LIBCURL_FEATURE_SPNEGO
+#undef LIBCURL_FEATURE_NTLM
+#undef LIBCURL_FEATURE_NTLM_WB
+#undef LIBCURL_FEATURE_TLS_SRP
+#undef LIBCURL_PROTOCOL_DICT
+#undef LIBCURL_PROTOCOL_FILE
+#undef LIBCURL_PROTOCOL_FTP
+#undef LIBCURL_PROTOCOL_FTPS
+#undef LIBCURL_PROTOCOL_GOPHER
+#undef LIBCURL_PROTOCOL_HTTP
+#undef LIBCURL_PROTOCOL_HTTPS
+#undef LIBCURL_PROTOCOL_IMAP
+#undef LIBCURL_PROTOCOL_IMAPS
+#undef LIBCURL_PROTOCOL_POP3
+#undef LIBCURL_PROTOCOL_POP3S
+#undef LIBCURL_PROTOCOL_RTSP
+#undef LIBCURL_PROTOCOL_SMTP
+#undef LIBCURL_PROTOCOL_SMTPS
+#undef LIBCURL_PROTOCOL_TELNET
+#undef LIBCURL_PROTOCOL_TFTP
+
+
+/*
+ * Audio
+ */
+#undef HAVE_LAME_LAME_H
+#undef HAVE_LAME
+#undef HAVE_LAME_HIP_DECODE
+#undef HAVE_MAD_H
+#undef HAVE_LIBMAD
+#undef HAVE_MPG123
+#undef HAVE_MPG123_H
+#undef HAVE_LIBSHOUT
+#undef HAVE_LIBOGG
+
+#undef HAVE_LIBCDIO
+#undef HAVE_LIBCDDB
+
+
+/*
+ * pthread
+ */
+#undef HAVE_PTHREADS
+
+
+
+/*
+ * Grafiklibraries
+ */
+#undef HAVE_TIFF
+#undef HAVE_JPEG
+#undef HAVE_LIBJPEGTURBO
+#undef HAVE_PNG
+#undef HAVE_IMAGEMAGICK
+#undef HAVE_FREETYPE2
+#undef HAVE_SDL2
+#undef HAVE_SDL12
+#undef HAVE_X11
+
+/*
+ * Databases
+ */
+#undef HAVE_MYSQL
+#undef HAVE_POSTGRESQL
+#undef POSTGRESQL_HAVE_PQsetSingleRowMode
+#undef HAVE_FREETDS
+#undef HAVE_SYBASE
+#undef HAVE_SQLITE3
+
+
+#define ppluint8	undefined
+#define pplint8		undefined
+#define ppluint16	undefined
+#define pplint16	undefined
+#define ppluint32	undefined
+#define pplint32	undefined
+#define ppluint64	undefined
+#define pplint64	undefined
+
+#define ppliptr		undefined
+
+#define pplfloat	float
+#define ppldouble	double
+#define pplbool		bool
+#define pplchar		char
+#define ppluchar	unsigned char
+
+#define ICONV_UNICODE	undefined
+
+#ifdef _WIN32
+	#ifdef _M_ALPHA
+		#ifndef __BIG_ENDIAN__
+			#define __BIG_ENDIAN__
+		#endif
+	#else
+		#ifndef __LITTLE_ENDIAN__
+			#define __LITTLE_ENDIAN__
+		#endif
+	#endif
+
+	#define WIN32_LEAN_AND_MEAN		// Keine MFCs
+	#define _WIN32_WINNT 0x501
+	// Ab Visual Studio 2005 (Visual C++ 8.0) gibt es einige �nderungen
+	#if _MSC_VER >= 1400
+		#define _CRT_SECURE_NO_WARNINGS
+		#define _CRT_SECURE_NO_DEPRECATE 
+		#define _AFX_SECURE_NO_DEPRECATE 
+		#define _ATL_SECURE_NO_DEPRECATE
+		#pragma warning(disable : 4996)
+		#pragma warning(disable : 4800)
+
+		/*
+		#define unlink _unlink
+		#define strdup _strdup
+		#define fileno _fileno
+		#define mkdir _mkdir
+		#define open _open
+		#define close _close
+		#define read _read
+		*/
+	#endif
+	//#define _WINSOCKAPI_   /* Prevent inclusion of winsock.h in windows.h */
+	//#include <windows.h>
+#endif
+
+#endif

@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+ACLOCAL=aclocal
+AUTOMAKE=automake
+AUTOCONF=autoconf
+
+#sh genMakefile.in
+$ACLOCAL
+$AUTOMAKE -c --add-missing --force-missing
+$AUTOCONF
