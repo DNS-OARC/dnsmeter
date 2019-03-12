@@ -17,14 +17,14 @@ features:
 
 
 # Build and install
-./configure
-make
-make install
+    ./configure
+    make
+    make install
 
 By default the binaries will be installed in /usr/local/bin. If you want them
 somewhere else (e.g. /usr/bin), please use ./configure --prefix:
 
-./configure --prefix=/usr
+    ./configure --prefix=/usr
 
 # Uninstall
 make uninstall
@@ -54,9 +54,9 @@ Hostname or IP and Port of the target nameserver
 File with payload in text format. Each line must contain one query with name and record type.
 Example:
 
-www.denic.de A
-denic.de NS
-...
+    www.denic.de A
+    denic.de NS
+    ...
 
 Attention: the file should not be too big, because it is completely loaded into memory and
 precompiled to DNS query packets. In my tests I used a 180 MB file with over 8000000 queries.
@@ -119,8 +119,8 @@ Lets assume the following scenario:
 
 This makes the following command:
 
-dnspecker -p /home/lasttests/payload.txt -r 30000,40000,45000,50000,100000,150000 \
-  -s 10.0.0.0/8 -z 192.168.0.1:53 -e igb0 -d 70 -c results.csv
+    dnspecker -p /home/lasttests/payload.txt -r 30000,40000,45000,50000,100000,150000 \
+    -s 10.0.0.0/8 -z 192.168.0.1:53 -e igb0 -d 70 -c results.csv
   
 
 
