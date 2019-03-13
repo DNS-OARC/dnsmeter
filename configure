@@ -8728,7 +8728,9 @@ fi
 
 done
 
-ac_fn_c_check_header_compile "$LINENO" "resolv.h" "ac_cv_header_resolv_h" "
+for ac_header in resolv.h
+do :
+  ac_fn_c_check_header_compile "$LINENO" "resolv.h" "ac_cv_header_resolv_h" "
 #ifdef HAVE_SYS_TYPES_H
 	#include <sys/types.h>
 #endif
@@ -8741,9 +8743,13 @@ ac_fn_c_check_header_compile "$LINENO" "resolv.h" "ac_cv_header_resolv_h" "
 
 "
 if test "x$ac_cv_header_resolv_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_RESOLV_H 1
+_ACEOF
 
 fi
 
+done
 
 
 

@@ -207,7 +207,7 @@ AC_CHECK_HEADERS([wchar.h])
 AC_CHECK_HEADERS([widec.h])
 AC_CHECK_HEADERS([syslog.h])
 AC_CHECK_HEADERS([sys/mman.h])
-AC_CHECK_HEADER([resolv.h],[],[],
+AC_CHECK_HEADERS([resolv.h],[],[],
 [
 #ifdef HAVE_SYS_TYPES_H
 	#include <sys/types.h>
