@@ -73,6 +73,10 @@
 #undef HAVE_SYS_SELECT_H
 #undef HAVE_SYS_POLL_H
 #undef HAVE_SYS_TIME_H
+#undef HAVE_RESOLV_H
+#undef HAVE_ARPA_NAMESER_H
+#undef HAVE_ARPA_INET_H
+#undef HAVE_NETDB_H
 
 
 /*

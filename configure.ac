@@ -184,8 +184,13 @@ AC_CHECK_HEADERS([sys/time.h])
 AC_CHECK_HEADERS([sys/types.h])
 AC_CHECK_HEADERS([sys/socket.h])
 AC_CHECK_HEADERS([sys/poll.h])
+AC_CHECK_HEADERS([sys/select.h])
+AC_CHECK_HEADERS([sys/sysinfo.h])
+AC_CHECK_HEADERS([sys/sysctl.h])
+AC_CHECK_HEADERS([sys/resource.h])
 AC_CHECK_HEADERS([netinet/in.h])
 AC_CHECK_HEADERS([arpa/nameser.h])
+AC_CHECK_HEADERS([arpa/inet.h])
 AC_CHECK_HEADERS([resolv.h],,,[])
 AC_CHECK_HEADERS([netdb.h])
 AC_CHECK_HEADERS([arpa/inet.h])
@@ -203,6 +208,12 @@ AC_CHECK_HEADERS([wchar.h])
 AC_CHECK_HEADERS([widec.h])
 AC_CHECK_HEADERS([syslog.h])
 AC_CHECK_HEADERS([sys/mman.h])
+AC_CHECK_HEADERS([resolv.h],,,[
+	#include <sys/types.h>
+	#include <netinet/in.h>
+	#include <arpa/nameser.h>
+])
+
 
 
 AC_CHECK_TYPE(size_t, unsigned)
