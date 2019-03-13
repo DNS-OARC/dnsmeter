@@ -45,13 +45,6 @@ AC_PROG_CC
 CFLAGS=$OLD_CFLAGS
 AC_PROG_CXX
 
-AX_CHECK_COMPILE_FLAG([-no-pie],
-    LDFLAGS="-no-pie $LDFLAGS"
-    NOPIE="-no-pie",
-    NOPIE=""
-)
-AC_SUBST(NOPIE)
-
 case "$host_os" in
 	freebsd* )
 		CFLAGS="-I/usr/local/include $CFLAGS"
