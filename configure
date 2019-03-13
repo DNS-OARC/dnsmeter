@@ -10746,7 +10746,7 @@ fi
 fi
 
 report_have_libbind="no"
-if test "$have_res_query" = "yes"
+if test "$have_res_mkquery" = "yes"
 then
 
 $as_echo "#define HAVE_LIBBIND 1" >>confdefs.h
@@ -11144,8 +11144,6 @@ HAVE_X86_ASSEMBLER=
 
 
 ############################
-
-
 
 
 
@@ -12616,6 +12614,74 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
+
+
+###############################################################################
+# Report
+###############################################################################
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:
+******************************************************************************
+** Configuration summary for $PACKAGE_NAME Version $PACKAGE_VERSION
+** Target: $target_os        CPU: $target_cpu
+**
+** Byteorder: $report_byteorder
+**   Size of char         $ac_cv_sizeof_char     Size of float        $ac_cv_sizeof_float
+**   Size of short        $ac_cv_sizeof_short     Size of double       $ac_cv_sizeof_double
+**   Size of int          $ac_cv_sizeof_int     Size of void*        $ac_cv_sizeof_voidp
+**   Size of long         $ac_cv_sizeof_long     Size of wchar_t      $ac_cv_sizeof_wchar_t
+**   Size of long long    $ac_cv_sizeof_long_long
+**   Size of size_t       $ac_cv_sizeof_size_t
+******************************************************************************
+** Features:
+**   Threads:              $report_have_pthreads
+**   Resolver lib:         $report_have_libbind
+**   PCRE:                 $report_have_pcre
+******************************************************************************
+" >&5
+$as_echo "
+******************************************************************************
+** Configuration summary for $PACKAGE_NAME Version $PACKAGE_VERSION
+** Target: $target_os        CPU: $target_cpu
+**
+** Byteorder: $report_byteorder
+**   Size of char         $ac_cv_sizeof_char     Size of float        $ac_cv_sizeof_float
+**   Size of short        $ac_cv_sizeof_short     Size of double       $ac_cv_sizeof_double
+**   Size of int          $ac_cv_sizeof_int     Size of void*        $ac_cv_sizeof_voidp
+**   Size of long         $ac_cv_sizeof_long     Size of wchar_t      $ac_cv_sizeof_wchar_t
+**   Size of long long    $ac_cv_sizeof_long_long
+**   Size of size_t       $ac_cv_sizeof_size_t
+******************************************************************************
+** Features:
+**   Threads:              $report_have_pthreads
+**   Resolver lib:         $report_have_libbind
+**   PCRE:                 $report_have_pcre
+******************************************************************************
+" >&6; }
+
+missing=""
+
+if test "$report_have_pthreads" = "no"
+then
+	missing="$missing  - no threading available\n"
+fi
+
+if test "$report_have_pcre" != "yes"
+then
+	missing="$missing  - libpcre is required but not found\n"
+fi
+
+
+if test "$report_have_libbind" != "yes"
+then
+	missing="$missing  - libbind or libresolv is required but not found\n"
+fi
+
+if test -n "$missing"
+then
+	as_fn_error $? "Cannot build because of missing dependencies:
+$missing" "$LINENO" 5
+fi
 
 
 

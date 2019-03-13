@@ -38,8 +38,10 @@
 
 /* Features */
 #undef HAVE_TLS
-#undef HAVE_PPL7
 #undef HAVE_PTHREADS
+#undef HAVE_LIBBIND
+#undef HAVE_PCRE
+#undef HAVE_RES_MKQUERY
 
 /* Header files */
 #undef HAVE_UNISTD_H

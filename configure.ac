@@ -260,7 +260,7 @@ AC_CHECK_FUNC(sin,,[AC_CHECK_LIB(m,sin)])
 # Resolver
 AM_CHECK_LIBBIND()
 report_have_libbind="no"
-if test "$have_res_query" = "yes"
+if test "$have_res_mkquery" = "yes"
 then
 	AC_DEFINE(HAVE_LIBBIND,1,[ Define if you have libbind resolver functions ])
 	report_have_libbind="yes"
@@ -426,13 +426,62 @@ AC_SUBST(report_have_pcre)
 AC_SUBST(report_have_pthreads)
 AC_SUBST(report_have_libbind)
 
-
-
 ###############################################################################
 # Output
 ###############################################################################
 
 AC_OUTPUT
+
+
+###############################################################################
+# Report
+###############################################################################
+
+dnl report configuration
+AC_MSG_RESULT([
+******************************************************************************
+** Configuration summary for $PACKAGE_NAME Version $PACKAGE_VERSION
+** Target: $target_os        CPU: $target_cpu
+** 
+** Byteorder: $report_byteorder
+**   Size of char         $ac_cv_sizeof_char     Size of float        $ac_cv_sizeof_float
+**   Size of short        $ac_cv_sizeof_short     Size of double       $ac_cv_sizeof_double
+**   Size of int          $ac_cv_sizeof_int     Size of void*        $ac_cv_sizeof_voidp
+**   Size of long         $ac_cv_sizeof_long     Size of wchar_t      $ac_cv_sizeof_wchar_t
+**   Size of long long    $ac_cv_sizeof_long_long     
+**   Size of size_t       $ac_cv_sizeof_size_t
+******************************************************************************
+** Features:
+**   Threads:              $report_have_pthreads
+**   Resolver lib:         $report_have_libbind
+**   PCRE:                 $report_have_pcre
+******************************************************************************
+])
+
+dnl check if we have all required libraries
+missing=""
+
+if test "$report_have_pthreads" = "no"
+then
+	missing="$missing  - no threading available\n"
+fi
+
+if test "$report_have_pcre" != "yes"
+then
+	missing="$missing  - libpcre is required but not found\n"
+fi
+
+
+if test "$report_have_libbind" != "yes"
+then
+	missing="$missing  - libbind or libresolv is required but not found\n"
+fi
+
+if test -n "$missing"
+then
+	AC_MSG_ERROR(Cannot build because of missing dependencies:
+$missing)
+fi
 
 
 
