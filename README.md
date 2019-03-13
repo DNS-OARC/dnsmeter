@@ -16,6 +16,12 @@ features:
   - runs on Linux (Ubuntu, CentOS) and FreeBSD
 
 
+# Requirements
+- c++ compiler and libraries (tested with gcc and clang)
+- pcre library
+- pthreads
+- libresolv, which contains the function res_mkquery or libbind
+
 # Build and install
     ./configure
     make
