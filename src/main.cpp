@@ -215,7 +215,7 @@ ppl7::Array DNSSender::getQueryRates(const ppl7::String &QueryRates)
 void DNSSender::getTarget(int argc, char**argv)
 {
 	if (!ppl7::HaveArgv(argc,argv,"-z")) {
-		throw MissingCommandlineParameter("Ziel-IP/Hostname oder Port nicht angegeben (-z IP:PORT)");
+		throw MissingCommandlineParameter("target IP/hostname or port missing (-z IP:PORT)");
 	}
 	ppl7::String Tmp=ppl7::GetArgv(argc,argv,"-z");
 	ppl7::Array Tok(Tmp,":");
@@ -253,12 +253,12 @@ void DNSSender::getSource(int argc, char**argv)
 int DNSSender::getParameter(int argc, char**argv)
 {
 	if (ppl7::HaveArgv(argc,argv,"-q") && ppl7::HaveArgv(argc,argv,"-s")) {
-		printf ("ERROR: Parameter koennen nicht gleichzeitig verwendet werden: -q -s\n\n");
+		printf ("ERROR: could not use parameters -q and -s together\n\n");
 		help();
 		return 1;
 	}
 	if ((!ppl7::HaveArgv(argc,argv,"-q")) && (!ppl7::HaveArgv(argc,argv,"-s"))) {
-		printf ("ERROR: Quell IP/Host oder gespooftes Netz muss angegeben werden (-q IP | -s NETZ)\n\n");
+		printf ("ERROR: source IP/hostname or network for source address spoofing missing (-q IP | -s NETWORK)\n\n");
 		help();
 		return 1;
 	}
@@ -272,7 +272,7 @@ int DNSSender::getParameter(int argc, char**argv)
 		getTarget(argc, argv);
 		getSource(argc, argv);
 	} catch (const ppl7::Exception &e) {
-		printf ("ERROR: Fehlender oder fehlerhafter Parameter\n");
+		printf ("ERROR: missing or invalid parameter\n");
 		e.print();
 		printf ("\n");
 		help();
@@ -288,7 +288,7 @@ int DNSSender::getParameter(int argc, char**argv)
 	if (ppl7::HaveArgv(argc,argv,"-d")) {
 		DnssecRate=ppl7::GetArgv(argc,argv,"-d").toInt();
 		if (DnssecRate<0 || DnssecRate>100) {
-			printf ("ERROR: DNSSEC-Rate muss zwischen 0 und 100 liegen (-d #)\n\n");
+			printf ("ERROR: DNSSEC-Rate must be an integer between 0 and 100 (-d #)\n\n");
 			help();
 			return 1;
 		}
@@ -297,7 +297,7 @@ int DNSSender::getParameter(int argc, char**argv)
 	if (!Runtime) Runtime=10;
 	if (!Timeout) Timeout=2;
 	if (QueryFilename.isEmpty()) {
-		printf ("ERROR: Payload-File ist nicht angegeben (-p FILENAME)\n\n");
+		printf ("ERROR: Payload-File is missing (-p FILENAME)\n\n");
 		help();
 		return 1;
 	}
@@ -312,7 +312,7 @@ int DNSSender::openFiles()
 		try {
 			openCSVFile(CSVFileName);
 		} catch (const ppl7::Exception &e) {
-			printf ("ERROR: CSV-File konnte nicht geoeffnet werden\n");
+			printf ("ERROR: could not open CSV-file for writing\n");
 			e.print();
 			return 1;
 		}
@@ -320,7 +320,7 @@ int DNSSender::openFiles()
 	try {
 		payload.openQueryFile(QueryFilename);
 	} catch (const ppl7::Exception &e) {
-		printf ("ERROR: Payload-File konnte nicht geoeffnet werden oder enthaelt keine Queries\n");
+		printf ("ERROR: could not open payload file or it does not contain any queries\n");
 		e.print();
 		return 1;
 	}
