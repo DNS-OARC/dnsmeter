@@ -218,11 +218,11 @@ class DNSSender
 		SystemStat sys1,sys2;
 
 		int TargetPort;
-		int Laufzeit;
+		int Runtime;
 		int Timeout;
 		int ThreadCount;
 		int DnssecRate;
-		float Zeitscheibe;
+		float Timeslices;
 		bool ignoreResponses;
 		bool spoofingEnabled;
 
@@ -239,7 +239,7 @@ class DNSSender
 		void getSource(int argc, char**argv);
 		int getParameter(int argc, char**argv);
 		int openFiles();
-		void calcZeitscheibe(int queryrate);
+		void calcTimeslice(int queryrate);
 
 		void showCurrentStats(ppl7::ppl_time_t start_time);
 
@@ -276,7 +276,7 @@ class DNSSenderThread : public ppl7::Thread
 		int timeout;
 		int DnssecRate;
 		int dnsseccounter;
-		double Zeitscheibe;
+		double Timeslice;
 
 		double duration;
 		bool spoofingEnabled;
@@ -300,7 +300,7 @@ class DNSSenderThread : public ppl7::Thread
 		void setTimeout(int seconds);
 		void setDNSSECRate(int rate);
 		void setQueryRate(ppluint64 qps);
-		void setZeitscheibe(float ms);
+		void setTimeslice(float ms);
 		void setVerbose(bool verbose);
 		void setPayload(PayloadFile &payload);
 		void run();

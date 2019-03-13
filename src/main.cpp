@@ -176,10 +176,10 @@ DNSSender::Results operator-(const DNSSender::Results &second, const DNSSender::
 DNSSender::DNSSender()
 {
 	ppl7::InitSockets();
-	Laufzeit=10;
+	Runtime=10;
 	Timeout=2;
 	ThreadCount=1;
-	Zeitscheibe=1.0f;
+	Timeslices=1.0f;
 	ignoreResponses=false;
 	DnssecRate=0;
 	TargetPort=53;
@@ -279,7 +279,7 @@ int DNSSender::getParameter(int argc, char**argv)
 		return 1;
 	}
 
-	Laufzeit = ppl7::GetArgv(argc,argv,"-l").toInt();
+	Runtime = ppl7::GetArgv(argc,argv,"-l").toInt();
 	Timeout = ppl7::GetArgv(argc,argv,"-t").toInt();
 	ThreadCount = ppl7::GetArgv(argc,argv,"-n").toInt();
 	ppl7::String QueryRates = ppl7::GetArgv(argc,argv,"-r");
@@ -294,7 +294,7 @@ int DNSSender::getParameter(int argc, char**argv)
 		}
 	}
 	if (!ThreadCount) ThreadCount=1;
-	if (!Laufzeit) Laufzeit=10;
+	if (!Runtime) Runtime=10;
 	if (!Timeout) Timeout=2;
 	if (QueryFilename.isEmpty()) {
 		printf ("ERROR: Payload-File ist nicht angegeben (-p FILENAME)\n\n");
@@ -381,9 +381,9 @@ void DNSSender::prepareThreads()
 	for (int i=0;i<ThreadCount;i++) {
 		DNSSenderThread *thread=new DNSSenderThread();
 		thread->setDestination(TargetIP,TargetPort);
-		thread->setRuntime(Laufzeit);
+		thread->setRuntime(Runtime);
 		thread->setTimeout(Timeout);
-		thread->setZeitscheibe(Zeitscheibe);
+		thread->setTimeslice(Timeslices);
 		thread->setDNSSECRate(DnssecRate);
 		thread->setVerbose(false);
 		thread->setPayload(payload);
@@ -429,11 +429,11 @@ void DNSSender::showCurrentStats(ppl7::ppl_time_t start_time)
 }
 
 
-void DNSSender::calcZeitscheibe(int queryrate)
+void DNSSender::calcTimeslice(int queryrate)
 {
-	Zeitscheibe=(1000.0f/queryrate)*ThreadCount;
+	Timeslices=(1000.0f/queryrate)*ThreadCount;
 	//if (Zeitscheibe<1.0f) Zeitscheibe=1.0f;
-	if (Zeitscheibe<0.1f) Zeitscheibe=0.1f;
+	if (Timeslices<0.1f) Timeslices=0.1f;
 }
 
 
@@ -441,9 +441,9 @@ void DNSSender::run(int queryrate)
 {
 	printf ("###############################################################################\n");
 	if (queryrate) {
-		calcZeitscheibe(queryrate);
+		calcTimeslice(queryrate);
 		printf ("# Start Session with Threads: %d, Queryrate: %d, Timeslot: %0.6f ms\n",
-				ThreadCount,queryrate, Zeitscheibe);
+				ThreadCount,queryrate, Timeslices);
 	} else {
 		printf ("# Start Session with Threads: %d, Queryrate: unlimited\n",
 				ThreadCount);
@@ -452,7 +452,7 @@ void DNSSender::run(int queryrate)
 	ppl7::ThreadPool::iterator it;
 	for (it=threadpool.begin();it!=threadpool.end();++it) {
 		((DNSSenderThread*)(*it))->setQueryRate(queryrate/ThreadCount);
-		((DNSSenderThread*)(*it))->setZeitscheibe(Zeitscheibe);
+		((DNSSenderThread*)(*it))->setTimeslice(Timeslices);
 	}
 	vis_prev_results.clear();
 	sampleSensorData(sys1);
@@ -513,9 +513,9 @@ void DNSSender::saveResultsToCsv(const DNSSender::Results &result)
 
 	if (CSVFile.isOpen()) {
 		CSVFile.putsf ("%llu;%llu;%llu;%0.3f;%0.4f;%0.4f;%0.4f;\n",
-				(ppluint64)((double)result.counter_send/(double)Laufzeit),
-				(ppluint64)((double)result.counter_received/(double)Laufzeit),
-				(ppluint64)((double)result.counter_errors/(double)Laufzeit),
+				(ppluint64)((double)result.counter_send/(double)Runtime),
+				(ppluint64)((double)result.counter_received/(double)Runtime),
+				(ppluint64)((double)result.counter_errors/(double)Runtime),
 				(double)result.packages_lost*100.0/(double)result.counter_send,
 				result.rtt_total*1000.0/(double)ThreadCount,
 				result.rtt_min*1000.0,
@@ -537,10 +537,10 @@ void DNSSender::presentResults(const DNSSender::Results &result)
 			(const char*)InterfaceName,
 			transmit.packets, received.packets, transmit.bytes/1024, received.bytes/1024);
 
-	ppluint64 qps_send=(ppluint64)((double)result.counter_send/(double)Laufzeit);
-	ppluint64 bps_send=(ppluint64)((double)result.bytes_send/(double)Laufzeit);
-	ppluint64 qps_received=(ppluint64)((double)result.counter_received/(double)Laufzeit);
-	ppluint64 bps_received=(ppluint64)((double)result.bytes_received/(double)Laufzeit);
+	ppluint64 qps_send=(ppluint64)((double)result.counter_send/(double)Runtime);
+	ppluint64 bps_send=(ppluint64)((double)result.bytes_send/(double)Runtime);
+	ppluint64 qps_received=(ppluint64)((double)result.counter_received/(double)Runtime);
+	ppluint64 bps_received=(ppluint64)((double)result.bytes_received/(double)Runtime);
 
 	printf ("DNS Queries send: %10llu, Qps: %7llu, Data send: %7llu KB = %6llu MBit\n",
 			result.counter_send, qps_send, result.bytes_send/1024, bps_send/(1024*1024));
@@ -569,16 +569,16 @@ void DNSSender::presentResults(const DNSSender::Results &result)
 
 	if (result.counter_errors) {
 		printf ("Errors:           %10llu, Qps: %10llu\n",result.counter_errors,
-				(ppluint64)((double)result.counter_errors/(double)Laufzeit));
+				(ppluint64)((double)result.counter_errors/(double)Runtime));
 	}
 	if (result.counter_0bytes) {
 		printf ("Errors 0Byte:     %10llu, Qps: %10llu\n",result.counter_0bytes,
-				(ppluint64)((double)result.counter_0bytes/(double)Laufzeit));
+				(ppluint64)((double)result.counter_0bytes/(double)Runtime));
 	}
 	for (int i=0;i<255;i++) {
 		if (result.counter_errorcodes[i]>0) {
 			printf ("Errors %3d:       %10llu, Qps: %10llu [%s]\n",i, result.counter_errorcodes[i],
-					(ppluint64)((double)result.counter_errorcodes[i]/(double)Laufzeit),
+					(ppluint64)((double)result.counter_errorcodes[i]/(double)Runtime),
 					strerror(i));
 
 		}

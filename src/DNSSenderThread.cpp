@@ -38,7 +38,7 @@ DNSSenderThread::DNSSenderThread()
 {
 	buffer=(unsigned char*)malloc(4096);
 	if (!buffer) throw ppl7::OutOfMemoryException();
-	Zeitscheibe=0.0f;
+	Timeslice=0.0f;
 	runtime=10;
 	timeout=5;
 	queryrate=0;
@@ -101,11 +101,11 @@ void DNSSenderThread::setQueryRate(ppluint64 qps)
 }
 
 
-void DNSSenderThread::setZeitscheibe(float ms)
+void DNSSenderThread::setTimeslice(float ms)
 {
 	if (ms==0.0f || ms >1000.0f) throw ppl7::InvalidArgumentsException();
 	//if ((1000 % ms)!=0) throw ppl7::InvalidArgumentsException();
-	Zeitscheibe=(double)ms/1000;
+	Timeslice=(double)ms/1000;
 }
 
 
@@ -223,41 +223,41 @@ static inline double getNsec()
 void DNSSenderThread::runWithRateLimit()
 {
 	struct timespec ts;
-	ppluint64 total_zeitscheiben=runtime*1000/(Zeitscheibe*1000.0);
+	ppluint64 total_timeslices=runtime*1000/(Timeslice*1000.0);
 	ppluint64 queries_rest=runtime*queryrate;
 	ppl7::SockAddr addr=Socket.getSockAddr();
 	verbose=true;
 	if (verbose) {
 		//printf ("qps=%d, runtime=%d\n",queryrate, runtime);
 		printf ("runtime: %d s, timeslice: %0.6f s, total timeslices: %llu, Qpts: %llu, Source: %s:%d\n",
-				runtime,Zeitscheibe,total_zeitscheiben,
-				queries_rest/total_zeitscheiben,
+				runtime,Timeslice,total_timeslices,
+				queries_rest/total_timeslices,
 				(const char*)addr.toIPAddress().toString(), addr.port());
 	}
 	double now=getNsec();
-	double naechste_zeitscheibe=now;
+	double next_timeslice=now;
 	double next_checktime=now+0.1;
 
 	double start=ppl7::GetMicrotime();
 	double end=start+(double)runtime;
 	double total_idle=0.0;
 
-	for (ppluint64 z=0;z<total_zeitscheiben;z++) {
-		naechste_zeitscheibe+=Zeitscheibe;
-		ppluint64 restscheiben=total_zeitscheiben-z;
-		ppluint64 queries_pro_zeitscheibe=queries_rest/restscheiben;
-		if (restscheiben==1)
-			queries_pro_zeitscheibe=queries_rest;
-		for (ppluint64 i=0;i<queries_pro_zeitscheibe;i++) {
+	for (ppluint64 z=0;z<total_timeslices;z++) {
+		next_timeslice+=Timeslice;
+		ppluint64 timeslices_rest=total_timeslices-z;
+		ppluint64 queries_per_timeslice=queries_rest/timeslices_rest;
+		if (timeslices_rest==1)
+			queries_per_timeslice=queries_rest;
+		for (ppluint64 i=0;i<queries_per_timeslice;i++) {
 			sendPacket();
 		}
 
-		queries_rest-=queries_pro_zeitscheibe;
-		while ((now=getNsec())<naechste_zeitscheibe) {
-			if (now<naechste_zeitscheibe) {
-				total_idle+=naechste_zeitscheibe-now;
+		queries_rest-=queries_per_timeslice;
+		while ((now=getNsec())<next_timeslice) {
+			if (now<next_timeslice) {
+				total_idle+=next_timeslice-now;
 				ts.tv_sec=0;
-				ts.tv_nsec=(naechste_zeitscheibe-now)*1000000000;
+				ts.tv_nsec=(next_timeslice-now)*1000000000;
 				nanosleep(&ts,NULL);
 			}
 		}
