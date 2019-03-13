@@ -171,47 +171,54 @@ fi
 AC_SUBST(MAKECMD)
 
 
-AC_CHECK_HEADER([stdlib.h])
-AC_CHECK_HEADER([unistd.h])
-AC_CHECK_HEADER([stdarg.h])
-AC_CHECK_HEADER([stddef.h])
-AC_CHECK_HEADER([stdio.h])
-AC_CHECK_HEADER([math.h])
-AC_CHECK_HEADER([fcntl.h])
-AC_CHECK_HEADER([sys/file.h])
-AC_CHECK_HEADER([time.h])
-AC_CHECK_HEADER([sys/time.h])
-AC_CHECK_HEADER([sys/types.h])
-AC_CHECK_HEADER([sys/socket.h])
-AC_CHECK_HEADER([sys/poll.h])
-AC_CHECK_HEADER([sys/select.h])
-AC_CHECK_HEADER([sys/sysinfo.h])
-AC_CHECK_HEADER([sys/sysctl.h])
-AC_CHECK_HEADER([sys/resource.h])
-AC_CHECK_HEADER([netinet/in.h])
-AC_CHECK_HEADER([arpa/nameser.h])
-AC_CHECK_HEADER([arpa/inet.h])
-AC_CHECK_HEADER([resolv.h],,,[])
-AC_CHECK_HEADER([netdb.h])
-AC_CHECK_HEADER([arpa/inet.h])
-AC_CHECK_HEADER([strings.h])
-AC_CHECK_HEADER([errno.h])
-AC_CHECK_HEADER([signal.h])
-AC_CHECK_HEADER([dirent.h])
-AC_CHECK_HEADER([fnmatch.h])
-AC_CHECK_HEADER([sys/stat.h])
-AC_CHECK_HEADER([limits.h])
-AC_CHECK_HEADER([ctype.h])
-AC_CHECK_HEADER([wctype.h])
-AC_CHECK_HEADER([locale.h])
-AC_CHECK_HEADER([wchar.h])
-AC_CHECK_HEADER([widec.h])
-AC_CHECK_HEADER([syslog.h])
-AC_CHECK_HEADER([sys/mman.h])
-AC_CHECK_HEADER([resolv.h],,,[
+AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([unistd.h])
+AC_CHECK_HEADERS([stdarg.h])
+AC_CHECK_HEADERS([stddef.h])
+AC_CHECK_HEADERS([stdio.h])
+AC_CHECK_HEADERS([math.h])
+AC_CHECK_HEADERS([fcntl.h])
+AC_CHECK_HEADERS([sys/file.h])
+AC_CHECK_HEADERS([time.h])
+AC_CHECK_HEADERS([sys/time.h])
+AC_CHECK_HEADERS([sys/types.h])
+AC_CHECK_HEADERS([sys/socket.h])
+AC_CHECK_HEADERS([sys/poll.h])
+AC_CHECK_HEADERS([sys/select.h])
+AC_CHECK_HEADERS([sys/sysinfo.h])
+AC_CHECK_HEADERS([sys/sysctl.h])
+AC_CHECK_HEADERS([sys/resource.h])
+AC_CHECK_HEADERS([netinet/in.h])
+AC_CHECK_HEADERS([arpa/nameser.h])
+AC_CHECK_HEADERS([arpa/inet.h])
+AC_CHECK_HEADERS([resolv.h],,,[])
+AC_CHECK_HEADERS([netdb.h])
+AC_CHECK_HEADERS([arpa/inet.h])
+AC_CHECK_HEADERS([strings.h])
+AC_CHECK_HEADERS([errno.h])
+AC_CHECK_HEADERS([signal.h])
+AC_CHECK_HEADERS([dirent.h])
+AC_CHECK_HEADERS([fnmatch.h])
+AC_CHECK_HEADERS([sys/stat.h])
+AC_CHECK_HEADERS([limits.h])
+AC_CHECK_HEADERS([ctype.h])
+AC_CHECK_HEADERS([wctype.h])
+AC_CHECK_HEADERS([locale.h])
+AC_CHECK_HEADERS([wchar.h])
+AC_CHECK_HEADERS([widec.h])
+AC_CHECK_HEADERS([syslog.h])
+AC_CHECK_HEADERS([sys/mman.h])
+AC_CHECK_HEADERS([resolv.h],[],[],
+[
+#ifdef HAVE_SYS_TYPES_H
 	#include <sys/types.h>
+#endif
+#ifdef HAVE_NETINET_IN_H
 	#include <netinet/in.h>
+#endif
+#ifdef HAVE_ARPA_NAMESER_H
 	#include <arpa/nameser.h>
+#endif
 ])
 
 
@@ -474,18 +481,21 @@ missing=""
 
 if test "$report_have_pthreads" = "no"
 then
-	missing="$missing  - no threading available\n"
+	missing="$missing  - no threading available
+"
 fi
 
 if test "$report_have_pcre" != "yes"
 then
-	missing="$missing  - libpcre is required but not found\n"
+	missing="$missing  - libpcre is required but not found
+"
 fi
 
 
 if test "$report_have_libbind" != "yes"
 then
-	missing="$missing  - libbind or libresolv is required but not found\n"
+	missing="$missing  - libbind or libresolv is required but not found
+"
 fi
 
 if test -n "$missing"

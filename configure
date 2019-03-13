@@ -8743,9 +8743,15 @@ done
 for ac_header in resolv.h
 do :
   ac_fn_c_check_header_compile "$LINENO" "resolv.h" "ac_cv_header_resolv_h" "
+#ifdef HAVE_SYS_TYPES_H
 	#include <sys/types.h>
+#endif
+#ifdef HAVE_NETINET_IN_H
 	#include <netinet/in.h>
+#endif
+#ifdef HAVE_ARPA_NAMESER_H
 	#include <arpa/nameser.h>
+#endif
 
 "
 if test "x$ac_cv_header_resolv_h" = xyes; then :
@@ -12741,18 +12747,21 @@ missing=""
 
 if test "$report_have_pthreads" = "no"
 then
-	missing="$missing  - no threading available\n"
+	missing="$missing  - no threading available
+"
 fi
 
 if test "$report_have_pcre" != "yes"
 then
-	missing="$missing  - libpcre is required but not found\n"
+	missing="$missing  - libpcre is required but not found
+"
 fi
 
 
 if test "$report_have_libbind" != "yes"
 then
-	missing="$missing  - libbind or libresolv is required but not found\n"
+	missing="$missing  - libbind or libresolv is required but not found
+"
 fi
 
 if test -n "$missing"
