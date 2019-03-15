@@ -31,9 +31,11 @@ sinclude(autoconf/ax_gcc_x86_cpuid.m4)
 sinclude(autoconf/ax_check_compiler_flags.m4)
 sinclude(autoconf/ax_gcc_archflag.m4)
 sinclude(autoconf/libbind.m4)
+sinclude(autoconf/libpcap.m4)
 
 report_have_pthreads="no"
 report_have_pcre="no"
+report_have_libpcap="no"
 
 AC_CANONICAL_TARGET
 
@@ -280,12 +282,19 @@ fi
 LDFLAGS="$LDFLAGS -L/usr/local/lib"
 CFLAGS="$CFLAGS -I/usr/local/include"
 
-# PCRE vorhanden?
+# PCRE exists?
 AX_PATH_LIB_PCRE(
             AC_DEFINE(HAVE_PCRE, 1, [ Define if you have pcre. ])
             report_have_pcre="yes"
             ,
             )
+            
+# LIBPCAP exists?
+AX_PATH_LIB_PCAP(
+            AC_DEFINE(HAVE_LIBPCAP, 1, [ Define if you have libpcap. ])
+            report_have_libpcap="yes"
+            ,
+            )            
 
 case $target in
 	x86_64*|amd64*)
@@ -435,6 +444,7 @@ AC_SUBST(HAVE_X86_ASSEMBLER)
 AC_SUBST(report_have_pcre)
 AC_SUBST(report_have_pthreads)
 AC_SUBST(report_have_libbind)
+AC_SUBST(report_have_libpcap)
 
 ###############################################################################
 # Output
@@ -465,6 +475,7 @@ AC_MSG_RESULT([
 **   Threads:              $report_have_pthreads
 **   Resolver lib:         $report_have_libbind
 **   PCRE:                 $report_have_pcre
+**   LIBPCAP:              $report_have_libpcap
 ******************************************************************************
 ])
 

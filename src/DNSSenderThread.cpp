@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "config.h"
 #include <string.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -30,7 +30,6 @@
 #include <resolv.h>
 #include <math.h>
 #include <errno.h>
-
 #include "dnspecker.h"
 
 
@@ -55,6 +54,8 @@ DNSSenderThread::DNSSenderThread()
 	payload=NULL;
 	spoofing_net_start=0;
 	spoofing_net_size=0;
+	payloadIsPcap=false;
+	spoofingFromPcap=false;
 }
 
 
@@ -75,6 +76,7 @@ void DNSSenderThread::setDestination(const ppl7::IPAddress &ip, int port)
 void DNSSenderThread::setPayload(PayloadFile &payload)
 {
 	this->payload=&payload;
+	this->payloadIsPcap=payload.isPcap();
 }
 
 
@@ -123,31 +125,46 @@ void DNSSenderThread::setSourceNet(const ppl7::IPNetwork &net)
 	spoofing_net_size=powl(2,32-net.prefixlen());
 }
 
+void DNSSenderThread::setSourcePcap()
+{
+	spoofingEnabled=true;
+	spoofingFromPcap=true;
+}
+
 void DNSSenderThread::setVerbose(bool verbose)
 {
 	this->verbose=verbose;
 }
 
 
+#define PCAP_HEADER_SIZE 14+sizeof(struct ip)+sizeof(struct udphdr)
 
 void DNSSenderThread::sendPacket()
 {
-	ppl7::ByteArrayPtr bap;
 	size_t query_size;
 	while (1) {
 		try {
-			bap=payload->getQuery();
+			const ppl7::ByteArrayPtr &bap=payload->getQuery();
 			query_size=bap.size();
-			memcpy(buffer,bap.ptr(),query_size);
-			dnsseccounter+=DnssecRate;
-			if (dnsseccounter>=100) {
-				query_size=AddDnssecToQuery(buffer,4096,query_size);
-				dnsseccounter-=100;
+			if (payloadIsPcap) {
+				query_size-=PCAP_HEADER_SIZE;
+				memcpy(buffer,((const char*)bap.ptr())+PCAP_HEADER_SIZE,query_size);
+			} else {
+				memcpy(buffer,bap.ptr(),query_size);
+				dnsseccounter+=DnssecRate;
+				if (dnsseccounter>=100) {
+					query_size=AddDnssecToQuery(buffer,4096,query_size);
+					dnsseccounter-=100;
+				}
 			}
 			pkt.setPayload(buffer,query_size);
 			if (spoofingEnabled) {
-				pkt.randomSourceIP(spoofing_net_start, spoofing_net_size);
-				pkt.randomSourcePort();
+				if (spoofingFromPcap) {
+					pkt.useSourceFromPcap((const char *)bap.ptr(),bap.size());
+				} else {
+					pkt.randomSourceIP(spoofing_net_start, spoofing_net_size);
+					pkt.randomSourcePort();
+				}
 			}
 			pkt.setDnsId(getQueryTimestamp());
 			ssize_t n=Socket.send(pkt);

@@ -34,6 +34,7 @@ PPL7EXCEPTION(InvalidQueryFile, Exception);
 PPL7EXCEPTION(UnsupportedIPFamily, Exception);
 PPL7EXCEPTION(FailedToInitializePacketfilter, Exception);
 
+
 struct DNS_HEADER
 {
     unsigned short id; // identification number
@@ -84,6 +85,7 @@ public:
 	void randomSourceIP(const ppl7::IPNetwork &net);
 	void randomSourceIP(unsigned int start, unsigned int size);
 	void randomSourcePort();
+	void useSourceFromPcap(const char *pkt, size_t size);
 
 	size_t size() const;
 	unsigned char* ptr();
@@ -145,11 +147,15 @@ private:
 	ppluint64 validLinesInQueryFile;
 	std::list<ppl7::ByteArray> querycache;
 	std::list<ppl7::ByteArray>::const_iterator it;
+	bool payloadIsPcap;
+	bool detectPcap(ppl7::File &ff);
 	void loadAndCompile(ppl7::File &ff);
+	void loadAndCompilePcapFile(const ppl7::String &Filename);
 public:
 	PayloadFile();
 	void openQueryFile(const ppl7::String &Filename);
-	const ppl7::ByteArrayPtr getQuery();
+	const ppl7::ByteArrayPtr &getQuery();
+	bool isPcap();
 };
 
 class DNSReceiverThread : public ppl7::Thread
@@ -225,6 +231,7 @@ class DNSSender
 		float Timeslices;
 		bool ignoreResponses;
 		bool spoofingEnabled;
+		bool spoofFromPcap;
 
 		void openCSVFile(const ppl7::String &Filename);
 		void run(int queryrate);
@@ -281,6 +288,8 @@ class DNSSenderThread : public ppl7::Thread
 		double duration;
 		bool spoofingEnabled;
 		bool verbose;
+		bool payloadIsPcap;
+		bool spoofingFromPcap;
 
 		void sendPacket();
 		void waitForTimeout();
@@ -295,6 +304,7 @@ class DNSSenderThread : public ppl7::Thread
 		void setDestination(const ppl7::IPAddress &ip, int port);
 		void setSourceIP(const ppl7::IPAddress &ip);
 		void setSourceNet(const ppl7::IPNetwork &net);
+		void setSourcePcap();
 		void setRandomSource(const ppl7::IPNetwork &net);
 		void setRuntime(int seconds);
 		void setTimeout(int seconds);

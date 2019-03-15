@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include <ppl7.h>
 #include <ppl7-inet.h>
 #include <string.h>
@@ -148,6 +149,17 @@ void Packet::randomSourceIP(unsigned int start, unsigned int size)
 	struct ip *iphdr = (struct ip *)buffer;
 	iphdr->ip_src.s_addr = htonl(ppl7::rand(start,start+size-1));
 	chksum_valid=false;
+}
+
+
+void Packet::useSourceFromPcap(const char *pkt, size_t size)
+{
+	const struct ip *s_iphdr = (const struct ip *)(pkt+14);
+	const struct udphdr *s_udp = (const struct udphdr *)(pkt+14+sizeof(struct ip));
+	struct ip *iphdr = (struct ip *)buffer;
+	struct udphdr *udp = (struct udphdr *)(buffer+ISZ);
+	iphdr->ip_src.s_addr=s_iphdr->ip_src.s_addr;
+	udp->uh_sport=s_udp->uh_sport;
 }
 
 void Packet::setDestination(const ppl7::IPAddress &ip_addr, int port)

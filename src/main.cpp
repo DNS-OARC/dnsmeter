@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include <string.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -32,7 +33,7 @@
 #include <signal.h>
 #include <list>
 
-#include "../include/sensor.h"
+#include "sensor.h"
 #include "dnspecker.h"
 
 static const char *rcode_names[] = {
@@ -88,12 +89,14 @@ void DNSSender::help()
 			"  -h            shows this help\n"
 			"  -q HOST       hostname or IP address of sender if you don't want to spoof\n"
 			"                (see -s)\n"
-			"  -s NETWORK    spoof sender address. Use random IP from the given network\n"
+			"  -s NET|pcap   spoof sender address. Use random IP from the given network\n"
 			"                (example: 192.168.0.0/16). Only works when running as root!\n"
+			"                If payload is a pcap file, you can use \"-s pcap\" to use the\n"
+			"                source addresses and ports from the pcap file.\n"
 			"  -e ETH        interface on which the packet receiver should listen\n"
 			"                (FreeBSD only)\n"
 			"  -z HOST:PORT  hostname or IP address and port of the target nameserver\n"
-			"  -p FILE       file with queries/payload\n"
+			"  -p FILE       file with queries/payload or pcap file\n"
 			"  -l #          runtime in seconds (default=10 seconds)\n"
 			"  -t #          timeout in seconds (default=2 seconds)\n"
 			"  -n #          number of worker threads (default=1)\n"
@@ -185,6 +188,7 @@ DNSSender::DNSSender()
 	TargetPort=53;
 	spoofingEnabled=false;
 	Receiver=NULL;
+	spoofFromPcap=false;
 }
 
 DNSSender::~DNSSender()
@@ -236,8 +240,13 @@ void DNSSender::getTarget(int argc, char**argv)
 void DNSSender::getSource(int argc, char**argv)
 {
 	if (ppl7::HaveArgv(argc,argv,"-s")) {
-		SourceNet.set(ppl7::GetArgv(argc,argv,"-s"));
-		if (SourceNet.family()!=ppl7::IPAddress::IPv4) throw UnsupportedIPFamily("only IPv4 works");
+		ppl7::String Tmp=ppl7::GetArgv(argc,argv,"-s").toLowerCase();
+		if (Tmp=="pcap") {
+			spoofFromPcap=true;
+		} else {
+			SourceNet.set(Tmp);
+			if (SourceNet.family()!=ppl7::IPAddress::IPv4) throw UnsupportedIPFamily("only IPv4 works");
+		}
 		spoofingEnabled=true;
 	} else {
 		ppl7::String Tmp=ppl7::GetArgv(argc,argv,"-q");
@@ -388,7 +397,8 @@ void DNSSender::prepareThreads()
 		thread->setVerbose(false);
 		thread->setPayload(payload);
 		if (spoofingEnabled) {
-			thread->setSourceNet(SourceNet);
+			if (spoofFromPcap) thread->setSourcePcap();
+			else thread->setSourceNet(SourceNet);
 		} else {
 			thread->setSourceIP(SourceIP);
 		}

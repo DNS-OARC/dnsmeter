@@ -42,6 +42,7 @@
 #undef HAVE_LIBBIND
 #undef HAVE_PCRE
 #undef HAVE_RES_MKQUERY
+#undef HAVE_LIBPCAP
 
 /* Header files */
 #undef HAVE_UNISTD_H

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "config.h"
 #include <string.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -28,7 +28,6 @@
 #include <arpa/inet.h>
 #include <arpa/nameser.h>
 #include <resolv.h>
-
 #include "dnspecker.h"
 
 

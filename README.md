@@ -3,10 +3,11 @@ DNSPecker is a tool for testing performance of nameserver and/or infrastructure 
 It generates dns queries and sends them via UDP to a target nameserver and counts the answers.
 
 features:
-  - payload can be given as file
+  - payload can be given as text file or pcap file 
   - can automatically run different load steps, which can be given as list or ranges
   - results per load step can be stored in CSV file
-  - sender address can be spoofed from a given network
+  - sender address can be spoofed from a given network or from pcap file, if payload
+    is a pcap file
   - answers are counted, even if source address is spoofed, if answers get routed back
     to the load generator
   - roundtrip-times are measured (average, min, mix)
@@ -21,6 +22,7 @@ features:
 - pcre library
 - pthreads
 - libresolv, which contains the function res_mkquery or libbind
+- libpcap (optional, only required if you want to use pcap files a payload)
 
 # Build and install
     ./configure
@@ -39,12 +41,15 @@ make uninstall
 
 "dnspecker -h" shows help
 
-**-q HOST | -s NETWORK**
+**-q HOST | -s NETWORK | -s pcap**
 
 Source IP, hostname or network from which the packets should be send. If you dont't want to spoof,
 use -q with a single IP address or hostname. Use -s followed by a network, if you want to spoof
 the source address. dnspecker will generated random IP addresses inside this network.
 Example: -s 10.0.0.0/8
+
+If payload is a pcap file, you can use the source addresses and ports from the pcap file, if
+you use "-s pcap"
 
 **-e ETH**
 
@@ -57,7 +62,8 @@ Hostname or IP and Port of the target nameserver
 
 **-p FILE**
 
-File with payload in text format. Each line must contain one query with name and record type.
+File with payload in text format or pcap file. When using a text format each line must
+contain one query with name and record type.
 Example:
 
     www.denic.de A
@@ -99,6 +105,7 @@ Examples:
 **[-d #]**
 
 Amount of DNSSEC queries in percentage between 0 and 100. Default=0
+Is ignored, if using pcap file as payload.
 
 **[-c FILENAME]**
 
@@ -116,7 +123,7 @@ Lets assume the following scenario:
 - source ip on the load generator is 192.168.155.20
 - target nameserver has ip 192.168.0.1, port 53
 - we want to spoof the sender address from the network 10.0.0.0/8
-- the payload file is found here: /home/lasttests/payload.txt
+- the payload file is found here: /home/testdata/payload.txt
 - the nameserver is running on CentOS and we need to set a route back to the load generator:
   ip route add 10.0.0.0/8 via 192.168.155.20
 - we want to test the following load steps: 30000,40000,45000,50000,100000,150000
@@ -125,12 +132,14 @@ Lets assume the following scenario:
 
 This makes the following command:
 
-    dnspecker -p /home/lasttests/payload.txt -r 30000,40000,45000,50000,100000,150000 \
+    dnspecker -p /home/testdata/payload.txt -r 30000,40000,45000,50000,100000,150000 \
     -s 10.0.0.0/8 -z 192.168.0.1:53 -e igb0 -d 70 -c results.csv
   
+In the second example, we want to use a pcap file as payload and want to spoof with the
+addresses from that file:
 
-
-
+    dnspecker -p /home/testdata/pcap.file1 -r 30000,40000,45000,50000,100000,150000 \
+    -s pcap -z 192.168.0.1:53 -e igb0 -c results_pcap.csv
 
 
 
