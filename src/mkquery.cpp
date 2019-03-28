@@ -1,5 +1,5 @@
 /*
- * This file is part of dnspecker by Patrick Fedick <fedick@denic.de>
+ * This file is part of dnsmeter by Patrick Fedick <fedick@denic.de>
  *
  * Copyright (c) 2019 DENIC eG
  *
@@ -26,7 +26,7 @@
 #include <resolv.h>
 #include <netdb.h>
 
-#include "dnspecker.h"
+#include "../include/dnsmeter.h"
 
 static const char *rr_types[] = {
 		"A", "AAAA", "MX", "NS", "DS", "DNSKEY", "TXT", "SOA", "NAPTR", "RRSIG",

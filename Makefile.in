@@ -19,53 +19,53 @@ OBJECTS = build/main.o \
 	build/packet.o \
 	build/SampleSensorData.o
 
-all: dnspecker
+all: dnsmeter
 
-install: dnspecker
-	cp dnspecker $(TARGETBIN)
+install: dnsmeter
+	cp dnsmeter $(TARGETBIN)
 
 uninstall:
-	rm -rf $(TARGETBIN)/dnspecker
+	rm -rf $(TARGETBIN)/dnsmeter
 
 clean:
-	-rm -rf build dnspecker ppl7/release
+	-rm -rf build dnsmeter ppl7/release
 
 
-dnspecker: $(OBJECTS) Makefile ppl7/release/libppl7.a
-	$(CXX) -O -o dnspecker $(CFLAGS) $(OBJECTS) ppl7/release/libppl7.a $(LIBS)
+dnsmeter: $(OBJECTS) Makefile ppl7/release/libppl7.a
+	$(CXX) -O -o dnsmeter $(CFLAGS) $(OBJECTS) ppl7/release/libppl7.a $(LIBS)
 
 ppl7/release/libppl7.a: ppl7/Makefile
 	cd ppl7; $(MAKE) release/libppl7.a
 
-build/main.o: src/main.cpp Makefile include/dnspecker.h
+build/main.o: src/main.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/main.o -c src/main.cpp
 
-build/mkquery.o: src/mkquery.cpp Makefile include/dnspecker.h
+build/mkquery.o: src/mkquery.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/mkquery.o -c src/mkquery.cpp
 
-build/packet.o: src/packet.cpp Makefile include/dnspecker.h
+build/packet.o: src/packet.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/packet.o -c src/packet.cpp
 
-build/rawsocketsender.o: src/rawsocketsender.cpp Makefile include/dnspecker.h
+build/rawsocketsender.o: src/rawsocketsender.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/rawsocketsender.o -c src/rawsocketsender.cpp
 
-build/rawsocketreceiver.o: src/rawsocketreceiver.cpp Makefile include/dnspecker.h
+build/rawsocketreceiver.o: src/rawsocketreceiver.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/rawsocketreceiver.o -c src/rawsocketreceiver.cpp
 
-build/payload.o: src/payload.cpp Makefile include/dnspecker.h
+build/payload.o: src/payload.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/payload.o -c src/payload.cpp
 
-build/DNSSenderThread.o: src/DNSSenderThread.cpp Makefile include/dnspecker.h
+build/DNSSenderThread.o: src/DNSSenderThread.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/DNSSenderThread.o -c src/DNSSenderThread.cpp
 
-build/DNSReceiverThread.o: src/DNSReceiverThread.cpp Makefile include/dnspecker.h
+build/DNSReceiverThread.o: src/DNSReceiverThread.cpp Makefile include/dnsmeter.h
 	mkdir -p build
 	$(CXX) $(CFLAGS) -o build/DNSReceiverThread.o -c src/DNSReceiverThread.cpp
 

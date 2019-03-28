@@ -1,8 +1,8 @@
 ################################################################
-# Name:      Spec fuer dnspecker
+# Name:      Spec fuer dnsmeter
 # Autor:     Patrick Fedick
 ################################################################
-%define name dnspecker
+%define name dnsmeter
 %define version @VERSION@
 %define release @RPM_RELEASE@
 %define source @SOURCE@
@@ -33,7 +33,7 @@ Tool for testing performance of nameserver
 
 %install
 install -d -m 755 $RPM_BUILD_ROOT/usr/bin
-install -m 755 %{source}/dnspecker $RPM_BUILD_ROOT/usr/bin
+install -m 755 %{source}/dnsmeter $RPM_BUILD_ROOT/usr/bin
 
 %post
 
@@ -45,7 +45,7 @@ install -m 755 %{source}/dnspecker $RPM_BUILD_ROOT/usr/bin
 
 %files
 %defattr(-,root,root)
-/usr/bin/dnspecker
+/usr/bin/dnsmeter
 
 
 %changelog

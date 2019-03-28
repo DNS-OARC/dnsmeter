@@ -1,5 +1,5 @@
 /*
- * This file is part of dnspecker by Patrick Fedick <fedick@denic.de>
+ * This file is part of dnsmeter by Patrick Fedick <fedick@denic.de>
  *
  * Copyright (c) 2019 DENIC eG
  *
@@ -49,7 +49,7 @@
 #include <machine/atomic.h>
 #endif
 
-#include "dnspecker.h"
+#include "../include/dnsmeter.h"
 
 #pragma pack(push)  /* push current alignment to stack */
 #pragma pack(1)     /* set alignment to 1 byte boundary */

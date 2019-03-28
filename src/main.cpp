@@ -1,5 +1,5 @@
 /*
- * This file is part of dnspecker by Patrick Fedick <fedick@denic.de>
+ * This file is part of dnsmeter by Patrick Fedick <fedick@denic.de>
  *
  * Copyright (c) 2019 DENIC eG
  *
@@ -33,8 +33,8 @@
 #include <signal.h>
 #include <list>
 
+#include "../include/dnsmeter.h"
 #include "sensor.h"
-#include "dnspecker.h"
 
 static const char *rcode_names[] = {
 		"OK", "FORMAT", "SRVFAIL", "NAME", "NOTIMPL", "REFUSED",

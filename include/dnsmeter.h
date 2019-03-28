@@ -1,5 +1,5 @@
 /*
- * This file is part of dnspecker by Patrick Fedick <fedick@denic.de>
+ * This file is part of dnsmeter by Patrick Fedick <fedick@denic.de>
  *
  * Copyright (c) 2019 DENIC eG
  *
@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DNSPECKER_H_
-#define DNSPECKER_H_
+#ifndef DNSMETER_H_
+#define DNSMETER_H_
 #include <list>
 #include <ppl7.h>
 #include <ppl7-inet.h>
@@ -324,4 +324,4 @@ class DNSSenderThread : public ppl7::Thread
 
 
 
-#endif /* DNSPECKER_H_ */
+#endif /* DNSMETER_H_ */

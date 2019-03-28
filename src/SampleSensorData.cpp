@@ -1,5 +1,5 @@
 /*
- * This file is part of dnspecker by Patrick Fedick <fedick@denic.de>
+ * This file is part of dnsmeter by Patrick Fedick <fedick@denic.de>
  *
  * Copyright (c) 2019 DENIC eG
  *

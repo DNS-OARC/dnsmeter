@@ -1,5 +1,5 @@
-# DNSPecker
-DNSPecker is a tool for testing performance of nameserver and/or infrastructure around it.
+# DNSMeter
+DNSMeter is a tool for testing performance of nameserver and/or infrastructure around it.
 It generates dns queries and sends them via UDP to a target nameserver and counts the answers.
 
 features:
@@ -39,13 +39,13 @@ make uninstall
 
 # Usage
 
-"dnspecker -h" shows help
+"dnsmeter -h" shows help
 
 **-q HOST | -s NETWORK | -s pcap**
 
 Source IP, hostname or network from which the packets should be send. If you dont't want to spoof,
 use -q with a single IP address or hostname. Use -s followed by a network, if you want to spoof
-the source address. dnspecker will generated random IP addresses inside this network.
+the source address. dnsmeter will generated random IP addresses inside this network.
 Example: -s 10.0.0.0/8
 
 If payload is a pcap file, you can use the source addresses and ports from the pcap file, if
@@ -132,13 +132,13 @@ Lets assume the following scenario:
 
 This makes the following command:
 
-    dnspecker -p /home/testdata/payload.txt -r 30000,40000,45000,50000,100000,150000 \
+    dnsmeter -p /home/testdata/payload.txt -r 30000,40000,45000,50000,100000,150000 \
     -s 10.0.0.0/8 -z 192.168.0.1:53 -e igb0 -d 70 -c results.csv
   
 In the second example, we want to use a pcap file as payload and want to spoof with the
 addresses from that file:
 
-    dnspecker -p /home/testdata/pcap.file1 -r 30000,40000,45000,50000,100000,150000 \
+    dnsmeter -p /home/testdata/pcap.file1 -r 30000,40000,45000,50000,100000,150000 \
     -s pcap -z 192.168.0.1:53 -e igb0 -c results_pcap.csv
 
 
