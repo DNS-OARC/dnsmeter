@@ -33,8 +33,9 @@
 #include <signal.h>
 #include <list>
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 #include "sensor.h"
+#include "version.h"
 
 static const char *rcode_names[] = {
 		"OK", "FORMAT", "SRVFAIL", "NAME", "NOTIMPL", "REFUSED",
@@ -85,7 +86,12 @@ int main(int argc, char**argv)
 
 void DNSSender::help()
 {
-	printf ("Usage:\n"
+	ppl7::String name,underline;
+	name.setf("dnsmeter %s",DNSMETER_VERSION);
+	underline.repeat("=",name.size());
+	name.printnl();
+	underline.printnl();
+	printf ("\nUsage:\n"
 			"  -h            shows this help\n"
 			"  -q HOST       hostname or IP address of sender if you don't want to spoof\n"
 			"                (see -s)\n"
@@ -339,7 +345,7 @@ int DNSSender::openFiles()
 
 int DNSSender::main(int argc, char**argv)
 {
-	if (ppl7::HaveArgv(argc,argv,"-h") || ppl7::HaveArgv(argc,argv,"--help")) {
+	if (ppl7::HaveArgv(argc,argv,"-h") || ppl7::HaveArgv(argc,argv,"--help") || argc<2) {
 		help();
 		return 0;
 	}
