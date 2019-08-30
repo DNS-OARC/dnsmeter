@@ -1,0 +1,33 @@
+dist: bionic
+addons:
+  apt:
+    update: true
+    packages:
+    - git
+    - libbind-dev
+    - libssl-dev
+    - libbz2-dev
+    - libidn2-dev
+    - zlib1g-dev
+    - libpcap-dev
+    - libpcre3-dev
+language: cpp
+compiler:
+  - gcc
+install: ./autogen.sh
+script:
+  - git clone https://github.com/pfedick/pplib.git
+  - cd pplib
+  - ./configure --without-postgresql "--prefix=$PWD/../ppl7"
+  - make
+  - make install
+  - cd ..
+  - ./configure --enable-warn-all "--with-ppl7=$PWD/ppl7"
+  - make dist
+  - tar zxvf *.tar.gz
+  - cd dnsmeter-*[0-9]
+  - mkdir build
+  - cd build
+  - ../configure --enable-warn-all "--with-ppl7=$PWD/../../ppl7"
+  - make
+  - src/dnsmeter -h

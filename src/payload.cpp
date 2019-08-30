@@ -36,7 +36,7 @@
 
 #include <list>
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 
 #ifdef HAVE_LIBPCAP
 #include <pcap/pcap.h>

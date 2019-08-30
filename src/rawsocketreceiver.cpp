@@ -49,7 +49,7 @@
 #include <machine/atomic.h>
 #endif
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 
 #pragma pack(push)  /* push current alignment to stack */
 #pragma pack(1)     /* set alignment to 1 byte boundary */
@@ -190,7 +190,7 @@ RawSocketReceiver::RawSocketReceiver()
 		close(sd);
 		throw;
 	}
-	
+
 #else
 	buffer=(unsigned char*)malloc(buflen);
 	if (!buffer) throw ppl7::OutOfMemoryException();
