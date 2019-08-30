@@ -29,7 +29,7 @@
 #include <arpa/nameser.h>
 #include <resolv.h>
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 
 
 DNSReceiverThread::DNSReceiverThread()
@@ -96,6 +96,3 @@ const RawSocketReceiver::Counter &DNSReceiverThread::getCounter() const
 {
 	return counter;
 }
-
-
-

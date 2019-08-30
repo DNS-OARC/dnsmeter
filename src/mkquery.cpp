@@ -26,7 +26,7 @@
 #include <resolv.h>
 #include <netdb.h>
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 
 static const char *rr_types[] = {
 		"A", "AAAA", "MX", "NS", "DS", "DNSKEY", "TXT", "SOA", "NAPTR", "RRSIG",
@@ -98,4 +98,3 @@ int AddDnssecToQuery(unsigned char *buffer, size_t buffersize, int querysize, in
 	opt->z=htons(0x8000);	// DO-bit
 	return querysize+11;
 }
-

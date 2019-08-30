@@ -31,7 +31,7 @@
 #include <math.h>
 #include <errno.h>
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 
 
 DNSSenderThread::DNSSenderThread()
@@ -330,5 +330,3 @@ ppluint64 DNSSenderThread::getCounterErrorCode(int err) const
 {
 	if (err < 255) return counter_errorcodes[err];
 	return 0;}
-
-

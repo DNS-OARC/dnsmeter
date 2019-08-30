@@ -39,7 +39,7 @@
 #include <math.h>
 
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 
 #define USZ sizeof(struct udphdr)
 #define ISZ sizeof(struct ip)
@@ -227,6 +227,3 @@ unsigned char* Packet::ptr()
 	if (!chksum_valid) updateChecksums();
 	return buffer;
 }
-
-
-

@@ -35,7 +35,7 @@
 #include <resolv.h>
 #include <errno.h>
 
-#include "../include/dnsmeter.h"
+#include "dnsmeter.h"
 
 RawSocketSender::RawSocketSender()
 {

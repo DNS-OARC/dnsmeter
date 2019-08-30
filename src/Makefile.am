@@ -1,0 +1,101 @@
+# EXTRA_CFLAGS =
+# INCLUDE	= -I. -Iinclude -Ippl7/include
+#
+# CFLAGS		=  -ggdb -O2 -Wall  $(INCLUDE) @CFLAGS@ @DEFS@  @PTHREAD_CFLAGS@ \
+# 	@ZLIB_CFLAGS@ @BZ2_CFLAGS@ @PCRE_CFLAGS@ @OPENSSL_INCLUDES@ @ICONV_CFLAGS@  \
+# 	@PCAP_CFLAGS@  $(EXTRA_CFLAGS)
+#
+#
+# LIBS = @LDFLAGS@ @OPENSSL_LDFLAGS@ @OPENSSL_LIBS@ @LIBS@ @PTHREAD_CFLAGS@ @PTHREAD_LIBS@ \
+# 	@ZLIB_LIBS@ @BZ2_LIBS@ @PCRE_LIBS@ @ICONV_LIBS@ @PCAP_LIBS@ -lrt -lstdc++
+#
+# OBJECTS = build/main.o \
+# 	build/mkquery.o \
+# 	build/rawsocketsender.o \
+# 	build/rawsocketreceiver.o \
+# 	build/DNSSenderThread.o \
+# 	build/DNSReceiverThread.o \
+# 	build/payload.o \
+# 	build/packet.o \
+# 	build/SampleSensorData.o
+#
+# all: dnsmeter
+#
+# install: dnsmeter
+# 	cp dnsmeter $(TARGETBIN)
+#
+# uninstall:
+# 	rm -rf $(TARGETBIN)/dnsmeter
+#
+# clean:
+# 	-rm -rf build dnsmeter ppl7/release
+#
+#
+# dnsmeter: $(OBJECTS) Makefile ppl7/release/libppl7.a
+# 	$(CXX) -O -o dnsmeter $(CFLAGS) $(OBJECTS) ppl7/release/libppl7.a $(LIBS)
+#
+# ppl7/release/libppl7.a: ppl7/Makefile
+# 	cd ppl7; $(MAKE) release/libppl7.a
+#
+# build/main.o: src/main.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/main.o -c src/main.cpp
+#
+# build/mkquery.o: src/mkquery.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/mkquery.o -c src/mkquery.cpp
+#
+# build/packet.o: src/packet.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/packet.o -c src/packet.cpp
+#
+# build/rawsocketsender.o: src/rawsocketsender.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/rawsocketsender.o -c src/rawsocketsender.cpp
+#
+# build/rawsocketreceiver.o: src/rawsocketreceiver.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/rawsocketreceiver.o -c src/rawsocketreceiver.cpp
+#
+# build/payload.o: src/payload.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/payload.o -c src/payload.cpp
+#
+# build/DNSSenderThread.o: src/DNSSenderThread.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/DNSSenderThread.o -c src/DNSSenderThread.cpp
+#
+# build/DNSReceiverThread.o: src/DNSReceiverThread.cpp Makefile include/dnsmeter.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/DNSReceiverThread.o -c src/DNSReceiverThread.cpp
+#
+# build/SampleSensorData.o: src/SampleSensorData.cpp Makefile include/sensor.h
+# 	mkdir -p build
+# 	$(CXX) $(CFLAGS) -o build/SampleSensorData.o -c src/SampleSensorData.cpp
+
+MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
+#CLEANFILES = dnsmeter.1
+
+SUBDIRS =
+
+AM_CXXFLAGS = -I$(srcdir) \
+  -I$(top_srcdir) \
+  $(PTHREAD_CFLAGS)
+
+#EXTRA_DIST = dnsmeter.1.in
+
+bin_PROGRAMS = dnsmeter
+
+dnsmeter_SOURCES = DNSReceiverThread.cpp DNSSenderThread.cpp main.cpp \
+  mkquery.cpp packet.cpp payload.cpp rawsocketreceiver.cpp \
+  rawsocketsender.cpp SampleSensorData.cpp
+dist_dnsmeter_SOURCES = dnsmeter.h sensor.h version.h
+dnsmeter_LDADD = $(PTHREAD_LIBS)
+
+#man1_MANS = dnsmeter.1
+#
+#dnsmeter.1: dnsmeter.1.in Makefile
+#	sed -e 's,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g' \
+#-e 's,[@]PACKAGE_URL[@],$(PACKAGE_URL),g' \
+#-e 's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' \
+#< $(srcdir)/dnsmeter.1.in > dnsmeter.1
