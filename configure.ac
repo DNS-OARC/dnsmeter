@@ -1,3 +1,22 @@
+# Copyright (c) 2019, OARC, Inc.
+# Copyright (c) 2019, DENIC eG
+# All rights reserved.
+#
+# This file is part of dnsmeter.
+#
+# dnsmeter is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# dnsmeter is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
+
 AC_PREREQ(2.69)
 AC_INIT([dnsmeter], [1.0.0], [admin@dns-oarc.net], [dnsmeter], [https://github.com/DNS-OARC/dnsmeter/issues])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
@@ -17,32 +36,13 @@ AC_ARG_ENABLE([warn-all], [AS_HELP_STRING([--enable-warn-all], [Enable all compi
 AX_PTHREAD
 AC_CHECK_LIB([pcap], [pcap_open_live], [], [AC_MSG_ERROR([libpcap not found])])
 AC_CHECK_LIB([m], [sqrt])
-
-# Check for PPL7
-AC_ARG_WITH([ppl7], [AS_HELP_STRING([--with-ppl7=PATH], [Specify PPL7 path])], [
-  use_ppl7="$withval"
-],[
-  use_ppl7="yes"
+AC_CHECK_LIB([bind], [ns_initparse], [], [AC_CHECK_LIB([bind], [__ns_initparse])])
+AC_CHECK_LIB([resolv], [res_mkquery], [], [
+	AC_CHECK_LIB([resolv], [__res_mkquery], [], [
+		AC_CHECK_LIB([resolv], [res_9_mkquery])
+	])
 ])
-
-AC_MSG_CHECKING([for PPL7])
-if test $use_ppl7 = no; then
-  AC_MSG_ERROR([PPL7 must be installed])
-elif test $use_ppl7 = yes; then
-  ppl7path="$PATH"
-  AC_MSG_RESULT([using \$PATH])
-else
-  ppl7path="$withval/bin"
-  AC_MSG_RESULT([using $ppl7path])
-fi
-
-AC_PATH_PROG(ac_cv_ppl7_config, [ppl7-config], [no], [$ppl7path])
-if test "$ac_cv_ppl7_config" = "no"; then
-  AC_MSG_ERROR([PPL7 must be installed])
-fi
-
-AS_VAR_APPEND(CXXFLAGS, [" `$ac_cv_ppl7_config --cflags release`"])
-AS_VAR_APPEND(LDFLAGS, [" `$ac_cv_ppl7_config --libs release`"])
+AC_CHECK_LIB([idn2], [idn2_to_ascii_4z])
 
 # Output Makefiles
 AC_CONFIG_FILES([

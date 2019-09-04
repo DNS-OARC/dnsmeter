@@ -1,21 +1,22 @@
 #!/bin/sh -e
-# Copyright (c) 2018-2019, OARC, Inc.
+# Copyright (c) 2019, OARC, Inc.
+# Copyright (c) 2019, DENIC eG
 # All rights reserved.
 #
-# This file is part of dnsjit.
+# This file is part of dnsmeter.
 #
-# dnsjit is free software: you can redistribute it and/or modify
+# dnsmeter is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# dnsjit is distributed in the hope that it will be useful,
+# dnsmeter is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with dnsjit.  If not, see <http://www.gnu.org/licenses/>.
+# along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
 
 m4_files="ax_append_flag.m4 ax_cflags_warn_all.m4 ax_compiler_vendor.m4 \
  ax_prepend_flag.m4 ax_pthread.m4 ax_require_defined.m4"
