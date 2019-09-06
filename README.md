@@ -3,7 +3,7 @@ DNSMeter is a tool for testing performance of nameserver and/or infrastructure a
 It generates dns queries and sends them via UDP to a target nameserver and counts the answers.
 
 features:
-  - payload can be given as text file or pcap file 
+  - payload can be given as text file or pcap file
   - can automatically run different load steps, which can be given as list or ranges
   - results per load step can be stored in CSV file
   - sender address can be spoofed from a given network or from pcap file, if payload
@@ -134,7 +134,7 @@ This makes the following command:
 
     dnsmeter -p /home/testdata/payload.txt -r 30000,40000,45000,50000,100000,150000 \
     -s 10.0.0.0/8 -z 192.168.0.1:53 -e igb0 -d 70 -c results.csv
-  
+
 In the second example, we want to use a pcap file as payload and want to spoof with the
 addresses from that file:
 
@@ -143,3 +143,35 @@ addresses from that file:
 
 
 
+## Author(s)
+
+- Patrick Fedick [@pfedick](https://github.com/pfedick)
+
+## Contributor(s)
+
+- Jerry Lundström [@jelu](https://github.com/jelu)
+
+## Copyright
+
+Copyright (c) 2019, OARC, Inc.
+
+Copyright (c) 2019, DENIC eG
+
+All rights reserved.
+
+```
+This file is part of dnsmeter.
+
+dnsmeter is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+dnsmeter is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
+```

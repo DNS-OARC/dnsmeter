@@ -16,18 +16,12 @@ compiler:
   - gcc
 install: ./autogen.sh
 script:
-  - git clone https://github.com/pfedick/pplib.git
-  - cd pplib
-  - ./configure --without-postgresql "--prefix=$PWD/../ppl7"
-  - make
-  - make install
-  - cd ..
-  - ./configure --enable-warn-all "--with-ppl7=$PWD/ppl7"
+  - ./configure --enable-warn-all
   - make dist
   - tar zxvf *.tar.gz
   - cd dnsmeter-*[0-9]
   - mkdir build
   - cd build
-  - ../configure --enable-warn-all "--with-ppl7=$PWD/../../ppl7"
+  - ../configure --enable-warn-all
   - make
   - src/dnsmeter -h
