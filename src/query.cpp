@@ -24,6 +24,7 @@
 #include "query.h"
 #include "exceptions.h"
 
+#include <netinet/in.h>
 #include <string.h>
 #include <resolv.h>
 #include <netdb.h>

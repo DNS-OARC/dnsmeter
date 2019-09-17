@@ -32,6 +32,19 @@ LT_INIT([disable-static])
 # Check --enable-warn-all
 AC_ARG_ENABLE([warn-all], [AS_HELP_STRING([--enable-warn-all], [Enable all compiler warnings])], [AX_CFLAGS_WARN_ALL()])
 
+# Check --with-extra-cflags
+AC_ARG_WITH([extra-cflags], [AS_HELP_STRING([--with-extra-cflags=CFLAGS], [Add extra CFLAGS/CXXFLAGS])], [
+  AC_MSG_NOTICE([appending extra CFLAGS/CXXFLAGS... $withval])
+  AS_VAR_APPEND(CFLAGS, [" $withval"])
+  AS_VAR_APPEND(CXXFLAGS, [" $withval"])
+])
+
+# Check --with-extra-ldflags
+AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add extra LDFLAGS])], [
+  AC_MSG_NOTICE([appending extra LDFLAGS... $withval])
+  AS_VAR_APPEND(LDFLAGS, [" $withval"])
+])
+
 # Checks for support.
 AX_PTHREAD
 AC_CHECK_LIB([pcap], [pcap_open_live], [], [AC_MSG_ERROR([libpcap not found])])
@@ -43,6 +56,13 @@ AC_CHECK_LIB([resolv], [res_mkquery], [], [
 	])
 ])
 AC_CHECK_LIB([idn2], [idn2_to_ascii_4z])
+
+# Check for OS specific libraries
+case "$host_os" in
+    freebsd*)
+		AC_CHECK_LIB([kvm], [kvm_open])
+        ;;
+esac
 
 # Output Makefiles
 AC_CONFIG_FILES([

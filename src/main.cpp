@@ -24,6 +24,7 @@
 #include "dns_sender.h"
 
 #include <unistd.h>
+#include <netinet/in.h>
 #include <resolv.h>
 
 int main(int argc, char** argv)

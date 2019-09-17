@@ -23,13 +23,30 @@
 
 #include "raw_socket_receiver.h"
 #include "query.h"
+#include "exceptions.h"
 
+#define __FAVOR_BSD 1
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <netinet/ip.h>
 #include <netinet/udp.h>
+#include <errno.h>
+
+#ifdef __OpenBSD__
+#error "Raw socket receiver not implemented for OpenBSD"
+#endif
+#ifdef __FreeBSD__
+#define DNSMETER_USE_BPF 1
+#include <sys/ioctl.h>
+#include <netinet/in_systm.h>
+#include <net/if.h>
+#include <net/bpf.h>
+#include <net/ethernet.h>
+#include <machine/atomic.h>
+#endif
 
 #pragma pack(push) /* push current alignment to stack */
 #pragma pack(1) /* set alignment to 1 byte boundary */
@@ -40,7 +57,7 @@ struct ETHER {
 };
 #pragma pack(pop) /* restore original alignment from stack */
 
-#ifdef __FreeBSD__
+#ifdef DNSMETER_USE_BPF
 static int open_bpf()
 {
     int sd;
@@ -140,7 +157,7 @@ RawSocketReceiver::RawSocketReceiver()
     buflen     = 4096;
     sd         = -1;
     buffer     = NULL;
-#ifdef __FreeBSD__
+#ifdef DNSMETER_USE_BPF
     useZeroCopyBuffer = false;
     sd                = open_bpf();
     buffer            = (unsigned char*)malloc(sizeof(struct bpf_zbuf));
@@ -202,7 +219,7 @@ RawSocketReceiver::RawSocketReceiver()
 RawSocketReceiver::~RawSocketReceiver()
 {
     close(sd);
-#ifdef __FreeBSD__
+#ifdef DNSMETER_USE_BPF
     if (useZeroCopyBuffer) {
         struct bpf_zbuf* zbuf = (struct bpf_zbuf*)buffer;
         free(zbuf->bz_bufa);
@@ -214,7 +231,7 @@ RawSocketReceiver::~RawSocketReceiver()
 
 void RawSocketReceiver::initInterface(const ppl7::String& Device)
 {
-#ifdef __FreeBSD__
+#ifdef DNSMETER_USE_BPF
     struct ifreq ifreq;
     strcpy((char*)ifreq.ifr_name, (const char*)Device);
     if (ioctl(sd, BIOCSETIF, &ifreq) < 0) {
@@ -231,7 +248,7 @@ void RawSocketReceiver::setSource(const ppl7::IPAddress& ip_addr, int port)
 {
     SourceIP   = ip_addr;
     SourcePort = htons(port);
-#ifdef __FreeBSD__
+#ifdef DNSMETER_USE_BPF
     // Install packet filter in bpf
     int             sip     = htonl(*(int*)SourceIP.addr());
     struct bpf_insn insns[] = {
@@ -268,9 +285,9 @@ void RawSocketReceiver::setSource(const ppl7::IPAddress& ip_addr, int port)
 
 bool RawSocketReceiver::socketReady()
 {
-#ifdef __FreeBSD__
-//if (useZeroCopyBuffer) return true;
-#endif
+// #ifdef DNSMETER_USE_BPF
+// if (useZeroCopyBuffer) return true;
+// #endif
     fd_set         rset;
     struct timeval timeout;
     timeout.tv_sec  = 0;
@@ -303,7 +320,7 @@ static void count_packet(RawSocketReceiver::Counter& counter, unsigned char* buf
         counter.truncated++;
 }
 
-#ifdef __FreeBSD__
+#ifdef DNSMETER_USE_BPF
 /*
  *	Return ownership of a buffer to	the kernel for reuse.
  */
