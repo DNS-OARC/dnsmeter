@@ -25,11 +25,13 @@
 #include "query.h"
 #include "exceptions.h"
 
+#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <math.h>
 #include <netinet/ip.h>
 #include <netinet/udp.h>
 #include <string.h>
+#include <errno.h>
 
 DNSSenderThread::DNSSenderThread()
 {

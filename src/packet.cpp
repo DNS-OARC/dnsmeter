@@ -25,6 +25,8 @@
 #include "exceptions.h"
 #include "query.h"
 
+#define __FAVOR_BSD 1
+#include <netinet/in.h>
 #include <string.h>
 #include <netinet/ip.h>
 #include <netinet/udp.h>

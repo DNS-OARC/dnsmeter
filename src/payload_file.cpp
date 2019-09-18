@@ -25,6 +25,8 @@
 #include "exceptions.h"
 #include "query.h"
 
+#define __FAVOR_BSD 1
+#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <pcap/pcap.h>
 #include <netinet/ip.h>

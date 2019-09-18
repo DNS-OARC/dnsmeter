@@ -24,8 +24,21 @@
 #include "system_stat.h"
 #include "exceptions.h"
 
+#ifdef __linux__
 #include <sys/sysinfo.h>
+#endif
 #include <limits.h>
+#include <errno.h>
+#include <unistd.h>
+#ifdef __FreeBSD__
+#include <sys/resource.h>
+#include <sys/sysctl.h>
+#include <paths.h>
+#include <fcntl.h>
+#include <kvm.h>
+#include <ifaddrs.h>
+#include <net/if.h>
+#endif
 
 // ########################################################### Linux specific
 #ifdef __linux__
