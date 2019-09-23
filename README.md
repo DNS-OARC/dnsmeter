@@ -3,11 +3,11 @@ DNSMeter is a tool for testing performance of nameserver and/or infrastructure a
 It generates dns queries and sends them via UDP to a target nameserver and counts the answers.
 
 features:
-  - payload can be given as text file or pcap file
+  - payload can be given as text file or PCAP file
   - can automatically run different load steps, which can be given as list or ranges
   - results per load step can be stored in CSV file
-  - sender address can be spoofed from a given network or from pcap file, if payload
-    is a pcap file
+  - sender address can be spoofed from a given network or from PCAP file, if payload
+    is a PCAP file
   - answers are counted, even if source address is spoofed, if answers get routed back
     to the load generator
   - roundtrip-times are measured (average, min, mix)
@@ -22,7 +22,7 @@ features:
 - pcre library
 - pthreads
 - libresolv, which contains the function res_mkquery or libbind
-- libpcap (optional, only required if you want to use pcap files a payload)
+- libpcap (optional, only required if you want to use PCAP files a payload)
 
 # Build and install
     ./configure
@@ -48,7 +48,7 @@ use -q with a single IP address or hostname. Use -s followed by a network, if yo
 the source address. dnsmeter will generated random IP addresses inside this network.
 Example: -s 10.0.0.0/8
 
-If payload is a pcap file, you can use the source addresses and ports from the pcap file, if
+If payload is a PCAP file, you can use the source addresses and ports from the PCAP file, if
 you use "-s pcap"
 
 **-e ETH**
@@ -62,7 +62,7 @@ Hostname or IP and Port of the target nameserver
 
 **-p FILE**
 
-File with payload in text format or pcap file. When using a text format each line must
+File with payload in text format or PCAP file. When using a text format each line must
 contain one query with name and record type.
 Example:
 
@@ -89,27 +89,27 @@ Recommendation:
   - 200000 - 500000 packets per second: 2 Threads
   - more than 500000 packets per second: 4 Threads
 Attention: this is CPU dependent! If you have a fast CPU, you may need lesser threads,
-on a slow CPU you may need more threads. Dont't use more threads than cores available on your CPU,
+on a slow CPU you may need more threads. Don't use more threads than cores available on your CPU,
 minus one!
 
 **[-r #[,#,#]]**
 
-queryrate or load steps. Can be a single value if you want to test a specific queryrate, a comma
+query rate or load steps. Can be a single value if you want to test a specific query rate, a comma
 separated list or a range with step with. Default: as much as possible.
 
 Examples:
   - Single value: -r 100000
-  - a list of queryrates: -r 10000,20000,30000,40000,50000,60000
+  - a list of query rates: -r 10000,20000,30000,40000,50000,60000
   - a range with step: -r 10000-200000,10000
 
 **[-d #]**
 
-Amount of DNSSEC queries in percentage between 0 and 100. Default=0
-Is ignored, if using pcap file as payload.
+Amount of DNSSEC queries in percentage between 0 and 100. Default=0.
+Is ignored, if using PCAP file as payload.
 
 **[-c FILENAME]**
 
-Filname for results in CSV format.
+Filename for results in CSV format.
 
 Attention: if file exists, results are appended!
 
@@ -135,7 +135,7 @@ This makes the following command:
     dnsmeter -p /home/testdata/payload.txt -r 30000,40000,45000,50000,100000,150000 \
     -s 10.0.0.0/8 -z 192.168.0.1:53 -e igb0 -d 70 -c results.csv
 
-In the second example, we want to use a pcap file as payload and want to spoof with the
+In the second example, we want to use a PCAP file as payload and want to spoof with the
 addresses from that file:
 
     dnsmeter -p /home/testdata/pcap.file1 -r 30000,40000,45000,50000,100000,150000 \
