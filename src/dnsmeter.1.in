@@ -1,0 +1,276 @@
+.\" Copyright (c) 2019, OARC, Inc.
+.\" Copyright (c) 2019, DENIC eG
+.\" All rights reserved.
+.\"
+.\" This file is part of dnsmeter.
+.\"
+.\" dnsmeter is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" dnsmeter is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
+.TH dnsmeter 1 "@PACKAGE_VERSION@" "dnsmeter"
+.SH NAME
+dnsmeter \- DNS performance and infrastructure testing
+.SH SYNOPSIS
+.hy 0
+.ad l
+\fBdnsmeter\fR\ [\fB\-h\fR]
+[\fB\-q\ \fIHOST\fR]
+[\fB\-s\ \fINET|pcap\fR]
+[\fB\-e\ \fIETH\fR]
+[\fB\-z\ \fIHOST:PORT\fR]
+[\fB\-p\ \fIFILE\fR]
+[\fB\-l\ \fI#\fR]
+[\fB\-t\ \fI#\fR]
+[\fB\-n\ \fI#\fR]
+[\fB\-r\ \fI#\fR]
+[\fB\-d\ \fI#\fR]
+[\fB\-c\ \fIFILE\fR]
+[\fB\--ignore\fR]
+.ad
+.hy
+.SH DESCRIPTION
+DNSMeter is a tool for testing performance of nameserver and/or
+infrastructure around it.
+It generates dns queries and sends them via UDP to a target nameserver
+and counts the answers.
+
+Features:
+.br
+- payload can be given as text file or PCAP file
+.br
+- can automatically run different load steps, which can be given as
+list or ranges
+.br
+- results per load step can be stored in CSV file
+.br
+- sender address can be spoofed from a given network or from PCAP file,
+if payload is a PCAP file
+.br
+- answers are counted, even if source address is spoofed, if answers get
+routed back to the load generator
+.br
+- roundtrip-times are measured (average, min, mix)
+.br
+- amount of DNSSEC queries can be given as percentage of total traffic
+.br
+- optimized for high amount of packets. On an Intel(R) Xeon(R) CPU E5-2430
+v2 @ 2.50GHz it can generate more than 900.000 packets per second
+.SH OPTIONS
+.TP
+.B -h
+Show option help.
+.TP
+.BI -q \ HOST
+Hostname or IP address of sender if you don't want to spoof (see
+.IR -s ).
+.TP
+.BI -s \ NET|pcap
+Spoof sender address.
+Use random IP from the given network (example:
+.IR 192.168.0.0/16 ).
+Only works when running as root!
+If payload is a PCAP file, you can use
+.BI -s pcap
+to use the source addresses and ports from the PCAP file.
+.TP
+.BI -e \ ETH
+Interface on which the packet receiver should listen (FreeBSD only).
+.TP
+.BI -z \ HOST:PORT
+Hostname or IP address and port of the target nameserver.
+.TP
+.BI -p \ FILE
+File with queries/payload or PCAP file.
+.TP
+.BI -l \ #
+Runtime in seconds (default=10 seconds).
+.TP
+.BI -t \ #
+Timeout in seconds (default=2 seconds).
+.TP
+.BI -n \ #
+Number of worker threads (default=1).
+.TP
+.BI -r \ #
+Query rate (Default=as much as possible) can be a single value, a comma
+separated list (rate,rate,...) or a range and a step value (start - end,
+step).
+.TP
+.BI -d \ #
+Amount of queries in percent on which the DNSSEC-flags are set (default=0).
+.TP
+.BI -c \ FILE
+CSV-file for results.
+.TP
+.B --ignore
+Answers are ignored and therefor not counted.
+In this mode the tool only generates traffic.
+.SH USAGE
+This section contains additional usage information not covered by
+the options documentation.
+
+.BI -q \ HOST
+|
+.BI -s \ NETWORK
+|
+.BI -s \ pcap
+
+Source IP, hostname or network from which the packets should be send.
+If you dont't want to spoof, use
+.I -q
+with a single IP address or hostname.
+Use
+.I -s
+followed by a network, if you want to spoof the source address.
+.B dnsmeter
+will generated random IP addresses inside this network.
+Example:
+.B -s
+.IR 10.0.0.0/8 .
+
+If payload is a PCAP file, you can use the source addresses and ports
+from the PCAP file, if you use
+.B -s
+.IR pcap .
+
+.BI -e \ ETH
+
+Ignored on Linux, but on FreeBSD you have to enter the name of the
+network interface on which the tool should listen for the answers.
+
+.BI -p \ FILE
+
+File with payload in text format or PCAP file.
+When using a text format each line must contain one query with name
+and record type.
+
+Example:
+
+  www.denic.de A
+  denic.de NS
+  ...
+
+.IR NOTE :
+the file should not be too big, because it is completely
+loaded into memory and pre-compiled to DNS query packets.
+
+.BI -n \ #
+
+Number of worker threads, recommendation:
+.br
+- less than 200000 packets per second: 1 Thread
+.br
+- 200000 - 500000 packets per second: 2 Threads
+.br
+- more than 500000 packets per second: 4 Threads
+
+.BI NOTE :
+this is CPU dependent!
+If you have a fast CPU, you may need lesser threads, on a slow CPU you
+may need more threads.
+Don't use more threads than cores available on your CPU, minus one!
+
+.BI -r \ #[,#,#]
+
+Query rate or load steps.
+Can be a single value if you want to test a specific query rate, a comma
+separated list or a range with step with.
+
+Examples:
+.br
+- Single value: -r 100000
+.br
+- a list of query rates: -r 10000,20000,30000,40000,50000,60000
+.br
+- a range with step: -r 10000-200000,10000
+
+.BI -d \ #
+
+Amount of DNSSEC queries in percentage between 0 and 100.
+Is ignored, if using PCAP file as payload.
+
+.BI -c \ FILENAME
+
+Filename for results in CSV format.
+
+.BI NOTE :
+if file exists, results are appended!
+
+.SH EXAMPLE
+
+Lets assume the following scenario:
+.br
+- load generator runs on FreeBSD
+.br
+- network interface an which the traffic goes out and comes back is "igb0"
+.br
+- source ip on the load generator is 192.168.155.20
+.br
+- target nameserver has ip 192.168.0.1, port 53
+.br
+- we want to spoof the sender address from the network 10.0.0.0/8
+.br
+- the payload file is found here: /home/testdata/payload.txt
+.br
+- the nameserver is running on CentOS and we need to set a route back to the load generator:
+.br
+  ip route add 10.0.0.0/8 via 192.168.155.20
+.br
+- we want to test the following load steps: 30000,40000,45000,50000,100000,150000
+.br
+- results should be written to results.csv
+.br
+- DNSSEC rate should be 70%
+
+This makes the following command:
+
+  dnsmeter -p /home/testdata/payload.txt \\
+    -r 30000,40000,45000,50000,100000,150000 \\
+    -s 10.0.0.0/8 \\
+    -z 192.168.0.1:53 \\
+    -e igb0 \\
+    -d 70 \\
+    -c results.csv
+
+In the second example, we want to use a PCAP file as payload and want
+to spoof with the addresses from that file:
+
+  dnsmeter -p /home/testdata/pcap.file1 \\
+    -r 30000,40000,45000,50000,100000,150000 \\
+    -s pcap \\
+    -z 192.168.0.1:53 \\
+    -e igb0 \\
+    -c results_pcap.csv
+
+.SH AUTHOR
+Patrick Fedick
+.RI ( https://github.com/pfedick )
+.LP
+Maintained by DNS-OARC
+.LP
+.RS
+.I https://www.dns-oarc.net/
+.RE
+.LP
+.SH BUGS
+For issues and feature requests please use:
+.LP
+.RS
+\fI@PACKAGE_URL@\fP
+.RE
+.LP
+For question and help please use:
+.LP
+.RS
+\fI@PACKAGE_BUGREPORT@\fP
+.RE
+.LP

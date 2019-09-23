@@ -18,7 +18,7 @@
 # along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
 
 MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
-#CLEANFILES = dnsmeter.1
+CLEANFILES = dnsmeter.1
 
 SUBDIRS =
 
@@ -52,15 +52,16 @@ pplib/include/ppl7-config.h:
 $(srcdir)/pplib/release/libppl7.a: pplib/include/ppl7-config.h
 	cd "$(srcdir)/pplib" && make
 
-#man1_MANS = dnsmeter.1
-#
-#dnsmeter.1: dnsmeter.1.in Makefile
-#	sed -e 's,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g' \
-#-e 's,[@]PACKAGE_URL[@],$(PACKAGE_URL),g' \
-#-e 's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' \
-#< $(srcdir)/dnsmeter.1.in > dnsmeter.1
+man1_MANS = dnsmeter.1
 
-EXTRA_DIST = pplib/Makefile.in \
+dnsmeter.1: dnsmeter.1.in Makefile
+	sed -e 's,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g' \
+-e 's,[@]PACKAGE_URL[@],$(PACKAGE_URL),g' \
+-e 's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' \
+< $(srcdir)/dnsmeter.1.in > dnsmeter.1
+
+EXTRA_DIST = dnsmeter.1.in \
+  pplib/Makefile.in \
   pplib/src/types/ByteArrayPtr.cpp \
   pplib/src/types/ByteArray.cpp \
   pplib/src/types/Array.cpp \

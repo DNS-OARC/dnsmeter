@@ -75,6 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %{_bindir}/dnsmeter
 %{_datadir}/doc/*
+%{_mandir}/man1/*
 
 
 %changelog
