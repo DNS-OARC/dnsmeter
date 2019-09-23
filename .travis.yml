@@ -3,7 +3,6 @@ addons:
   apt:
     update: true
     packages:
-    - git
     - libbind-dev
     - libssl-dev
     - libbz2-dev
