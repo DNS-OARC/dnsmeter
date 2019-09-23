@@ -19,22 +19,21 @@
  * along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#include <ppl7.h>
 
-#include "dns_sender.h"
+#ifndef __dnsmeter_exceptions_h
+#define __dnsmeter_exceptions_h
 
-#include <unistd.h>
-#include <netinet/in.h>
-#include <resolv.h>
+PPL7EXCEPTION(MissingCommandlineParameter, Exception);
+PPL7EXCEPTION(InvalidCommandlineParameter, Exception);
+PPL7EXCEPTION(InvalidDNSQuery, Exception);
+PPL7EXCEPTION(UnknownRRType, Exception);
+PPL7EXCEPTION(BufferOverflow, Exception);
+PPL7EXCEPTION(UnknownDestination, Exception);
+PPL7EXCEPTION(InvalidQueryFile, Exception);
+PPL7EXCEPTION(UnsupportedIPFamily, Exception);
+PPL7EXCEPTION(FailedToInitializePacketfilter, Exception);
+PPL7EXCEPTION(KernelAccessFailed, Exception);
+PPL7EXCEPTION(SystemCallFailed, Exception);
 
-int main(int argc, char** argv)
-{
-    res_init();
-    // For unknown reason, res_mkquery is much slower (factor 3) when not
-    // setting the following options:
-    _res.options |= RES_USE_EDNS0;
-    _res.options |= RES_USE_DNSSEC;
-
-    DNSSender Sender;
-    return Sender.main(argc, argv);
-}
+#endif

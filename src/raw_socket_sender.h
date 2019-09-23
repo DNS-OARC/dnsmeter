@@ -19,22 +19,25 @@
  * along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#include "packet.h"
 
-#include "dns_sender.h"
+#include <ppl7.h>
 
-#include <unistd.h>
-#include <netinet/in.h>
-#include <resolv.h>
+#ifndef __dnsmeter_raw_socket_sender_h
+#define __dnsmeter_raw_socket_sender_h
 
-int main(int argc, char** argv)
-{
-    res_init();
-    // For unknown reason, res_mkquery is much slower (factor 3) when not
-    // setting the following options:
-    _res.options |= RES_USE_EDNS0;
-    _res.options |= RES_USE_DNSSEC;
+class RawSocketSender {
+private:
+    void* buffer;
+    int   sd;
 
-    DNSSender Sender;
-    return Sender.main(argc, argv);
-}
+public:
+    RawSocketSender();
+    ~RawSocketSender();
+    void setDestination(const ppl7::IPAddress& ip_addr, int port);
+    ssize_t send(Packet& pkt);
+    ppl7::SockAddr getSockAddr() const;
+    bool           socketReady();
+};
+
+#endif

@@ -19,22 +19,28 @@
  * along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#include <ppl7.h>
+#include <list>
 
-#include "dns_sender.h"
+#ifndef __dnsmeter_payload_file_h
+#define __dnsmeter_payload_file_h
 
-#include <unistd.h>
-#include <netinet/in.h>
-#include <resolv.h>
+class PayloadFile {
+private:
+    ppl7::Mutex                                QueryMutex;
+    ppluint64                                  validLinesInQueryFile;
+    std::list<ppl7::ByteArray>                 querycache;
+    std::list<ppl7::ByteArray>::const_iterator it;
+    bool                                       payloadIsPcap;
+    bool detectPcap(ppl7::File& ff);
+    void loadAndCompile(ppl7::File& ff);
+    void loadAndCompilePcapFile(const ppl7::String& Filename);
 
-int main(int argc, char** argv)
-{
-    res_init();
-    // For unknown reason, res_mkquery is much slower (factor 3) when not
-    // setting the following options:
-    _res.options |= RES_USE_EDNS0;
-    _res.options |= RES_USE_DNSSEC;
+public:
+    PayloadFile();
+    void openQueryFile(const ppl7::String& Filename);
+    const ppl7::ByteArrayPtr& getQuery();
+    bool                      isPcap();
+};
 
-    DNSSender Sender;
-    return Sender.main(argc, argv);
-}
+#endif
