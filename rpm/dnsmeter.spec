@@ -81,5 +81,5 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Mon Sep 23 2019 Jerry Lundström <lundstrom.jerry@gmail.com> 1.0.0-1
 - Release 1.0.0
-* Wed Sep 18 2019 Jerry Lundström <lundstrom.jerry@gmail.com> 1.0.0-1
-- First package release, v1.0.0
+* Wed Sep 18 2019 Jerry Lundström <lundstrom.jerry@gmail.com> 0.9.0-1
+- First package release

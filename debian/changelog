@@ -4,8 +4,8 @@ dnsmeter (1.0.0-1~unstable+1) unstable; urgency=low
 
  -- Jerry Lundström <lundstrom.jerry@gmail.com>  Mon, 23 Sep 2019 15:09:21 +0200
 
-dnsmeter (1.0.0-1~unstable+1) unstable; urgency=low
+dnsmeter (0.9.0-1~unstable+1) unstable; urgency=low
 
-  * First package release, v1.0.0
+  * First package release
 
  -- Jerry Lundström <lundstrom.jerry@gmail.com>  Wed, 18 Sep 2019 17:19:16 +0200
