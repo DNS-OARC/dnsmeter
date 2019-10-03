@@ -1,147 +1,126 @@
-# DNSMeter
-DNSMeter is a tool for testing performance of nameserver and/or infrastructure around it.
-It generates dns queries and sends them via UDP to a target nameserver and counts the answers.
+# dnsmeter
 
-features:
-  - payload can be given as text file or PCAP file
-  - can automatically run different load steps, which can be given as list or ranges
-  - results per load step can be stored in CSV file
-  - sender address can be spoofed from a given network or from PCAP file, if payload
-    is a PCAP file
-  - answers are counted, even if source address is spoofed, if answers get routed back
-    to the load generator
-  - roundtrip-times are measured (average, min, mix)
-  - amount of DNSSEC queries can be given as percentage of total traffic
-  - optimized for high amount of packets. On an Intel(R) Xeon(R) CPU E5-2430 v2 @ 2.50GHz
-    it can generate more than 900.000 packets per second
-  - runs on Linux (Ubuntu, CentOS) and FreeBSD
+`dnsmeter` is a tool for testing performance of a nameserver and the
+infrastructure around it. It generates DNS queries and sends them via UDP
+to a target nameserver and counts the answers.
 
+Features:
+- payload can be given as a text file or a PCAP file
+- can automatically run different load steps, which can be given as a list or ranges
+- results per load step can be stored in a CSV file
+- sender addresses can be spoofed from a given network or from the addresses found in the PCAP file
+- answers are counted, even if source address is spoofed, if answers get routed back to the load generator
+- round-trip-times are measured (average, min, mix)
+- the amount of DNSSEC queries can be given as percentage of total traffic
+- optimized for high amount of packets, on an Intel(R) Xeon(R) CPU E5-2430 v2 @ 2.50GHz it can generate more than 900.000 packets per second
+- runs on Linux and FreeBSD
 
-# Requirements
-- c++ compiler and libraries (tested with gcc and clang)
-- pcre library
-- pthreads
-- libresolv, which contains the function res_mkquery or libbind
-- libpcap (optional, only required if you want to use PCAP files a payload)
+## Dependencies
 
-# Build and install
-    ./configure
-    make
-    make install
+`dnsmeter` requires a couple of libraries beside a normal C++ compiling
+environment with autoconf, automake and libtool.
 
-By default the binaries will be installed in /usr/local/bin. If you want them
-somewhere else (e.g. /usr/bin), please use ./configure --prefix:
+`dnsmeter` has a non-optional dependency on the PCRE library, `libresolv`
+and PCAP library.
 
-    ./configure --prefix=/usr
+`dnsmeter` also includes [pplib](https://github.com/DNS-OARC/pplib),
+collection of C++ functions and classes, and it has non-optional dependency
+on OpenSSL, bzip2, IDN2 (or IDN1) library and zlib.
 
-# Uninstall
-make uninstall
+To install the dependencies under Debian/Ubuntu:
+```
+apt-get install -y libssl-dev libbz2-dev libidn2-dev zlib1g-dev libpcap-dev libpcre3-dev
+```
 
-# Usage
+NOTE: If your system does not have `libidn2-dev`, please use `libidn11-dev` instead.
 
-"dnsmeter -h" shows help
+To install the dependencies under CentOS (with EPEL enabled):
+```
+yum install -y openssl-devel bzip2-devel libidn2-devel zlib-devel libpcap-devel pcre-devel
+```
 
-**-q HOST | -s NETWORK | -s pcap**
+NOTE: If your using openSUSE/SLE then bzip2's package is `libbz2-devel`.
 
-Source IP, hostname or network from which the packets should be send. If you dont't want to spoof,
-use -q with a single IP address or hostname. Use -s followed by a network, if you want to spoof
-the source address. dnsmeter will generated random IP addresses inside this network.
-Example: -s 10.0.0.0/8
+To install the dependencies under FreeBSD 10+ using `pkg`:
+```
+pkg install -y openssl libidn2 libpcap pcre
+```
 
-If payload is a PCAP file, you can use the source addresses and ports from the PCAP file, if
-you use "-s pcap"
+## Building from source tarball
 
-**-e ETH**
+The [source tarball from DNS-OARC](https://www.dns-oarc.net/tools/dnsmeter)
+comes prepared with `configure`:
 
-Ignored on Linux, but on FreeBSD you have to enter the name of the network interface on which the
-tool should listen for the answers.
+```
+tar zxvf dnsmeter-version.tar.gz
+cd dnsmeter-version
+./configure [options]
+make
+make install
+```
 
-**-z HOST:PORT**
+NOTE: If building fails on FreeBSD, try adding these configure
+options: `--with-extra-cflags="-I /usr/local/include" --with-extra-ldflags="-L/usr/local/lib"`.
 
-Hostname or IP and Port of the target nameserver
+## Building from Git repository
 
-**-p FILE**
+If you are building `dnsmeter` from it's Git repository you will first need
+to initiate the Git submodules that exists and later create autoconf/automake
+files, this will require a build environment with autoconf, automake and
+libtool to be installed.
 
-File with payload in text format or PCAP file. When using a text format each line must
-contain one query with name and record type.
-Example:
+```
+git clone https://github.com/DNS-OARC/dnsmeter.git
+cd dnsmeter
+git submodule update --init
+./autogen.sh
+./configure [options]
+make
+make install
+```
 
-    www.denic.de A
-    denic.de NS
-    ...
+## Usage
 
-Attention: the file should not be too big, because it is completely loaded into memory and
-precompiled to DNS query packets. In my tests I used a 180 MB file with over 8000000 queries.
+Once installed please see `man dnsmeter` for usage.
 
-**[-l #]**
-
-runtime for each load step, default=10 seconds
-
-**[-t #]**
-
-time to wait for answers after each load step. default=2 seconds
-
-**[-n #]**
-
-number of worker threads, default=1
-Recommendation:
-  - less than 200000 packets per second: 1 Thread
-  - 200000 - 500000 packets per second: 2 Threads
-  - more than 500000 packets per second: 4 Threads
-Attention: this is CPU dependent! If you have a fast CPU, you may need lesser threads,
-on a slow CPU you may need more threads. Don't use more threads than cores available on your CPU,
-minus one!
-
-**[-r #[,#,#]]**
-
-query rate or load steps. Can be a single value if you want to test a specific query rate, a comma
-separated list or a range with step with. Default: as much as possible.
-
-Examples:
-  - Single value: -r 100000
-  - a list of query rates: -r 10000,20000,30000,40000,50000,60000
-  - a range with step: -r 10000-200000,10000
-
-**[-d #]**
-
-Amount of DNSSEC queries in percentage between 0 and 100. Default=0.
-Is ignored, if using PCAP file as payload.
-
-**[-c FILENAME]**
-
-Filename for results in CSV format.
-
-Attention: if file exists, results are appended!
-
-
-# Example
+## Example
 
 Lets assume the following scenario:
 
 - load generator runs on FreeBSD
-- network interface an which the traffic goes out and comes back is "igb0"
-- source ip on the load generator is 192.168.155.20
-- target nameserver has ip 192.168.0.1, port 53
+- network interface an which the traffic goes out and comes back is `igb0`
+- source IP on the load generator is 192.168.155.20
+- target nameserver has IP 192.168.0.1, port 53
 - we want to spoof the sender address from the network 10.0.0.0/8
-- the payload file is found here: /home/testdata/payload.txt
-- the nameserver is running on CentOS and we need to set a route back to the load generator:
-  ip route add 10.0.0.0/8 via 192.168.155.20
+- the payload file is found here: `/home/testdata/payload.txt`
+- the nameserver is running on CentOS and we need to set a route back to the load generator: `ip route add 10.0.0.0/8 via 192.168.155.20`
 - we want to test the following load steps: 30000,40000,45000,50000,100000,150000
-- results should be written to results.csv
+- results should be written to `results.csv`
 - DNSSEC rate should be 70%
 
 This makes the following command:
 
-    dnsmeter -p /home/testdata/payload.txt -r 30000,40000,45000,50000,100000,150000 \
-    -s 10.0.0.0/8 -z 192.168.0.1:53 -e igb0 -d 70 -c results.csv
+```
+dnsmeter -p /home/testdata/payload.txt \
+  -r 30000,40000,45000,50000,100000,150000 \
+  -s 10.0.0.0/8 \
+  -z 192.168.0.1:53 \
+  -e igb0 \
+  -d 70 \
+  -c results.csv
+```
 
-In the second example, we want to use a PCAP file as payload and want to spoof with the
-addresses from that file:
+In the second example, we want to use a PCAP file as payload and want
+to spoof with the addresses from that file:
 
-    dnsmeter -p /home/testdata/pcap.file1 -r 30000,40000,45000,50000,100000,150000 \
-    -s pcap -z 192.168.0.1:53 -e igb0 -c results_pcap.csv
-
-
+```
+dnsmeter -p /home/testdata/pcap.file1 \
+  -r 30000,40000,45000,50000,100000,150000 \
+  -s pcap \
+  -z 192.168.0.1:53 \
+  -e igb0 \
+  -c results_pcap.csv
+```
 
 ## Author(s)
 
