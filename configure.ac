@@ -18,7 +18,7 @@
 # along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ(2.69)
-AC_INIT([dnsmeter], [1.0.0], [admin@dns-oarc.net], [dnsmeter], [https://github.com/DNS-OARC/dnsmeter/issues])
+AC_INIT([dnsmeter], [1.0.1], [admin@dns-oarc.net], [dnsmeter], [https://github.com/DNS-OARC/dnsmeter/issues])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADER([src/config.h])
@@ -57,6 +57,7 @@ AC_CHECK_LIB([resolv], [res_mkquery], [], [
 ])
 AC_CHECK_LIB([idn], [idna_to_ascii_4z])
 AC_CHECK_LIB([idn2], [idn2_to_ascii_4z])
+AC_CHECK_LIB([pcre], [pcre_exec])
 
 # Check for OS specific libraries
 case "$host_os" in

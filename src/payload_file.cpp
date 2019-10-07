@@ -50,8 +50,11 @@ PayloadFile::PayloadFile()
 bool PayloadFile::detectPcap(ppl7::File& ff)
 {
     unsigned char buffer[8];
-    if (ff.read(buffer, 8) != 8)
+    if (ff.read(buffer, 8) != 8) {
+        ff.seek(0);
         return false;
+    }
+    ff.seek(0);
     unsigned int magic = ppl7::Peek32(buffer + 0);
     if (magic == 0xa1b2c3d4 || magic == 0xa1b23c4d)
         return true;

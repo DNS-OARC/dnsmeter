@@ -1,5 +1,5 @@
 Name:           dnsmeter
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        DNS performance and infrastructure testing
 Group:          Productivity/Networking/DNS/Utilities
@@ -79,6 +79,19 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Oct 07 2019 Jerry Lundström <lundstrom.jerry@gmail.com> 1.0.1-1
+- Release 1.0.1
+  * This release fixes a few minor bugs and a dependency issue which made
+    `dnsmeter` throw an exception when using the `-r` option.
+  * Bugfixes:
+    - Use existing `rtt_avg`, was showing total RTT divided by number of threads
+    - Fix an issue which missed the first 8 bytes of a text payload
+  * Commits:
+    72197b5 PCAP detect
+    665be2d RTT average
+    3fe7b66 pplib dependencies, RTT average
+    e565d42 Funding
+    1a1ea40 README
 * Mon Sep 23 2019 Jerry Lundström <lundstrom.jerry@gmail.com> 1.0.0-1
 - Release 1.0.0
 * Wed Sep 18 2019 Jerry Lundström <lundstrom.jerry@gmail.com> 0.9.0-1
