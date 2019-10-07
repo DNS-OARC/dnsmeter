@@ -177,7 +177,6 @@ ppl7::Array DNSSender::getQueryRates(const ppl7::String& QueryRates)
             for (ppluint64 i = matches[1].toUnsignedInt64(); i <= matches[2].toUnsignedInt64(); i += matches[3].toUnsignedInt64()) {
                 rates.addf("%llu", i);
             }
-
         } else {
             rates.explode(QueryRates, ",");
         }
@@ -543,7 +542,7 @@ void DNSSender::presentResults(const DNSSender::Results& result)
     printf("DNS rtt average: %0.4f ms, "
            "min: %0.4f ms, "
            "max: %0.4f ms\n",
-        result.rtt_total * 1000.0 / (double)ThreadCount,
+        result.rtt_total * 1000.0 / (double)result.counter_received,
         result.rtt_min * 1000.0,
         result.rtt_max * 1000.0);
     printf("DNS truncated: %llu\nDNS RCODES: ", result.truncated);
