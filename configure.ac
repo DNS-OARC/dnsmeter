@@ -57,6 +57,7 @@ AC_CHECK_LIB([resolv], [res_mkquery], [], [
 ])
 AC_CHECK_LIB([idn], [idna_to_ascii_4z])
 AC_CHECK_LIB([idn2], [idn2_to_ascii_4z])
+AC_CHECK_LIB([pcre], [pcre_exec])
 
 # Check for OS specific libraries
 case "$host_os" in

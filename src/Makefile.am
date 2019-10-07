@@ -18,7 +18,8 @@
 # along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
 
 MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
-CLEANFILES = dnsmeter.1
+CLEANFILES = dnsmeter.1 $(srcdir)/pplib/include/ppl7-config.h \
+  $(srcdir)/pplib/release/libppl7.a
 
 SUBDIRS =
 
@@ -43,10 +44,10 @@ pplib/include/ppl7-config.h:
 	cd "$(srcdir)/pplib" && ./configure --disable-oggtest \
 --disable-freetypetest --disable-sdltest --disable-sdlframework \
 --without-jpeg --without-libjpegturbo --without-libpng \
---without-libmicrohttpd --without-libmcrypt-prefix --without-libidn \
---without-libidn2 --without-libtiff --without-libcurl --without-mpg123 \
+--without-libmicrohttpd --without-libmcrypt-prefix \
+--without-libtiff --without-libcurl --without-mpg123 \
 --without-lame --without-ogg --without-libcdio --without-libiconv-prefix \
---without-pcre --without-imlib --without-mysql --without-postgresql \
+--without-imlib --without-mysql --without-postgresql \
 --without-sqlite3 --without-libldn --without-nasm
 
 $(srcdir)/pplib/release/libppl7.a: pplib/include/ppl7-config.h
