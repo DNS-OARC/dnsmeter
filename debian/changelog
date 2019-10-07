@@ -1,3 +1,22 @@
+dnsmeter (1.0.1-1~unstable+1) unstable; urgency=low
+
+  * Release 1.0.1
+
+    This release fixes a few minor bugs and a dependency issue which made
+    `dnsmeter` throw an exception when using the `-r` option.
+
+    Bugfixes:
+    - Use existing `rtt_avg`, was showing total RTT divided by number of threads
+    - Fix an issue which missed the first 8 bytes of a text payload
+
+    72197b5 PCAP detect
+    665be2d RTT average
+    3fe7b66 pplib dependencies, RTT average
+    e565d42 Funding
+    1a1ea40 README
+
+ -- Jerry Lundström <lundstrom.jerry@gmail.com>  Mon, 07 Oct 2019 16:31:06 +0200
+
 dnsmeter (1.0.0-1~unstable+1) unstable; urgency=low
 
   * Release 1.0.0
