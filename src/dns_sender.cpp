@@ -507,7 +507,7 @@ void DNSSender::saveResultsToCsv(const DNSSender::Results& result)
             (ppluint64)((double)result.counter_received / (double)Runtime),
             (ppluint64)((double)result.counter_errors / (double)Runtime),
             (double)result.packages_lost * 100.0 / (double)result.counter_send,
-            result.rtt_total * 1000.0 / (double)ThreadCount,
+            result.rtt_avg * 1000.0,
             result.rtt_min * 1000.0,
             result.rtt_max * 1000.0);
         CSVFile.flush();
@@ -542,7 +542,7 @@ void DNSSender::presentResults(const DNSSender::Results& result)
     printf("DNS rtt average: %0.4f ms, "
            "min: %0.4f ms, "
            "max: %0.4f ms\n",
-        result.rtt_total * 1000.0 / (double)result.counter_received,
+        result.rtt_avg * 1000.0,
         result.rtt_min * 1000.0,
         result.rtt_max * 1000.0);
     printf("DNS truncated: %llu\nDNS RCODES: ", result.truncated);
