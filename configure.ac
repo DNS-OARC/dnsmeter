@@ -51,19 +51,26 @@ AC_CHECK_LIB([pcap], [pcap_open_live], [], [AC_MSG_ERROR([libpcap not found])])
 AC_CHECK_LIB([m], [sqrt])
 AC_CHECK_LIB([bind], [ns_initparse], [], [AC_CHECK_LIB([bind], [__ns_initparse])])
 AC_CHECK_LIB([resolv], [res_mkquery], [], [
-	AC_CHECK_LIB([resolv], [__res_mkquery], [], [
-		AC_CHECK_LIB([resolv], [res_9_mkquery])
-	])
+  AC_CHECK_LIB([resolv], [__res_mkquery], [], [
+    AC_CHECK_LIB([resolv], [res_9_mkquery])
+  ])
 ])
 AC_CHECK_LIB([idn], [idna_to_ascii_4z])
 AC_CHECK_LIB([idn2], [idn2_to_ascii_4z])
 AC_CHECK_LIB([pcre], [pcre_exec])
 
+sinclude(src/pplib/autoconf/iconv.m4)
+
 # Check for OS specific libraries
 case "$host_os" in
-    freebsd*)
-		AC_CHECK_LIB([kvm], [kvm_open])
-        ;;
+  freebsd*)
+    AC_CHECK_LIB([kvm], [kvm_open])
+    AM_ICONV
+    ICONV_CFLAGS="$INCICONV"
+    ICONV_LIBS="$LIBICONV"
+    AC_SUBST(ICONV_CFLAGS)
+    AC_SUBST(ICONV_LIBS)
+    ;;
 esac
 
 # Output Makefiles
