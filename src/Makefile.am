@@ -26,7 +26,7 @@ SUBDIRS =
 AM_CXXFLAGS = -I$(srcdir) \
   -I$(top_srcdir) \
   -I$(srcdir)/pplib/include \
-  $(PTHREAD_CFLAGS)
+  $(PTHREAD_CFLAGS) $(ICONV_CFLAGS)
 
 bin_PROGRAMS = dnsmeter
 
@@ -36,7 +36,8 @@ dnsmeter_SOURCES = dns_receiver_thread.cpp dns_sender.cpp \
 dist_dnsmeter_SOURCES = dns_receiver_thread.h dns_sender.h \
   dns_sender_thread.h exceptions.h packet.h payload_file.h query.h \
   raw_socket_receiver.h raw_socket_sender.h system_stat.h
-dnsmeter_LDADD = $(PTHREAD_LIBS) $(srcdir)/pplib/release/libppl7.a
+dnsmeter_LDADD = $(PTHREAD_LIBS) $(ICONV_LIBS) \
+  $(srcdir)/pplib/release/libppl7.a
 
 BUILT_SOURCES = pplib/include/ppl7-config.h
 
