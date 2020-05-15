@@ -25,6 +25,7 @@ BuildRequires:  libidn2-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libpcap-devel
 BuildRequires:  pcre-devel
+BuildRequires:  gettext-devel
 
 %description
 DNSMeter is a tool for testing performance of nameserver and/or
