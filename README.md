@@ -1,5 +1,7 @@
 # dnsmeter
 
+[![Build Status](https://travis-ci.com/DNS-OARC/dnsmeter.svg?branch=develop)](https://travis-ci.com/DNS-OARC/dnsmeter) [![Total alerts](https://img.shields.io/lgtm/alerts/g/DNS-OARC/dnsmeter.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/DNS-OARC/dnsmeter/alerts/) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dns-oarc%3Adnsmeter&metric=bugs)](https://sonarcloud.io/dashboard?id=dns-oarc%3Adnsmeter) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dns-oarc%3Adnsmeter&metric=security_rating)](https://sonarcloud.io/dashboard?id=dns-oarc%3Adnsmeter)
+
 `dnsmeter` is a tool for testing performance of a nameserver and the
 infrastructure around it. It generates DNS queries and sends them via UDP
 to a target nameserver and counts the answers.
