@@ -173,7 +173,9 @@ void DNSSenderThread::sendPacket()
             }
             return;
         } catch (const UnknownRRType& exp) {
+            continue;
         } catch (const InvalidDNSQuery& exp) {
+            continue;
         }
     }
 }
