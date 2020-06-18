@@ -18,8 +18,9 @@
 # along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
 
 MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
-CLEANFILES = dnsmeter.1 $(srcdir)/pplib/include/ppl7-config.h \
+DISTCLEANFILES = $(srcdir)/pplib/include/ppl7-config.h \
   $(srcdir)/pplib/release/libppl7.a
+CLEANFILES = dnsmeter.1
 
 SUBDIRS =
 

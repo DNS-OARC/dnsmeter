@@ -27,6 +27,12 @@
 
 class Packet {
 private:
+#if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+    Packet& operator=(const Packet& other);
+    Packet(Packet &&other) noexcept;
+    Packet const & operator=(Packet &&other);
+#endif
+
     unsigned char* buffer;
     int            buffersize;
     int            payload_size;

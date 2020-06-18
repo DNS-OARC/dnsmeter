@@ -29,6 +29,12 @@
 
 class DNSSenderThread : public ppl7::Thread {
 private:
+#if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+    DNSSenderThread& operator=(const DNSSenderThread& other);
+    DNSSenderThread(DNSSenderThread &&other) noexcept;
+    DNSSenderThread const & operator=(DNSSenderThread &&other);
+#endif
+
     RawSocketSender Socket;
     Packet          pkt;
 

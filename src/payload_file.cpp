@@ -105,6 +105,7 @@ void PayloadFile::loadAndCompile(ppl7::File& ff)
                 validLinesInQueryFile++;
             } catch (...) {
                 // ignore invalid queries
+                continue;
             }
         } catch (const ppl7::EndOfFileException&) {
             if (validLinesInQueryFile == 0) {

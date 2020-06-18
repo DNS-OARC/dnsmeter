@@ -28,6 +28,12 @@
 
 class RawSocketSender {
 private:
+#if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+    RawSocketSender& operator=(const RawSocketSender& other);
+    RawSocketSender(RawSocketSender &&other) noexcept;
+    RawSocketSender const & operator=(RawSocketSender &&other);
+#endif
+
     void* buffer;
     int   sd;
 
