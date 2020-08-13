@@ -20,9 +20,9 @@
 MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
 DISTCLEANFILES = $(srcdir)/pplib/include/ppl7-config.h \
   $(srcdir)/pplib/release/libppl7.a
-CLEANFILES = dnsmeter.1
+CLEANFILES = dnsmeter.1 *.gcda *.gcno *.gcov
 
-SUBDIRS =
+SUBDIRS = test
 
 AM_CXXFLAGS = -I$(srcdir) \
   -I$(top_srcdir) \
@@ -62,6 +62,13 @@ dnsmeter.1: dnsmeter.1.in Makefile
 -e 's,[@]PACKAGE_URL[@],$(PACKAGE_URL),g' \
 -e 's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' \
 < $(srcdir)/dnsmeter.1.in > dnsmeter.1
+
+if ENABLE_GCOV
+gcov-local:
+	for src in $(dnsmeter_SOURCES); do \
+	  gcov -l -r -s "$(srcdir)" "$$src"; \
+	done
+endif
 
 EXTRA_DIST = dnsmeter.1.in \
   pplib/Makefile.in \
