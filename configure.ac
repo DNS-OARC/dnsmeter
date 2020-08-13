@@ -45,6 +45,15 @@ AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add
   AS_VAR_APPEND(LDFLAGS, [" $withval"])
 ])
 
+# Check --enable-gcov
+AC_ARG_ENABLE([gcov], [AS_HELP_STRING([--enable-gcov], [Enable coverage testing])], [
+  coverage_cxxflags="--coverage -g -O0 -fno-inline -fno-inline-small-functions -fno-default-inline"
+  AC_MSG_NOTICE([enabling coverage testing... $coverage_cxxflags])
+  AS_VAR_APPEND(CXXFLAGS, [" $coverage_cxxflags"])
+])
+AM_CONDITIONAL([ENABLE_GCOV], [test "x$enable_gcov" != "xno"])
+AM_EXTRA_RECURSIVE_TARGETS([gcov])
+
 # Checks for support.
 AX_PTHREAD
 AC_CHECK_LIB([pcap], [pcap_open_live], [], [AC_MSG_ERROR([libpcap not found])])
@@ -77,5 +86,6 @@ esac
 AC_CONFIG_FILES([
   Makefile
   src/Makefile
+  src/test/Makefile
 ])
 AC_OUTPUT

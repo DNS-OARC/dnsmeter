@@ -28,3 +28,5 @@ SUBDIRS = src
 dist_doc_DATA = CHANGES README.md LICENSE
 
 EXTRA_DIST = m4
+
+test: check
