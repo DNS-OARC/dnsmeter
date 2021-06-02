@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2021, OARC, Inc.
  * Copyright (c) 2019, DENIC eG
  * All rights reserved.
  *
@@ -70,7 +70,7 @@ double DNSReceiverThread::getDuration() const
 double DNSReceiverThread::getRoundTripTimeAverage() const
 {
     if (counter.num_pkgs)
-        return counter.rtt_total / counter.num_pkgs;
+        return counter.rtt_total / counter.num_pkgs; //NOSONAR
     return 0.0f;
 }
 

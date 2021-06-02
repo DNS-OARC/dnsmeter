@@ -23,4 +23,4 @@ script:
   - cd build
   - ../configure --enable-warn-all
   - make
-  - src/dnsmeter -h
+  - make test

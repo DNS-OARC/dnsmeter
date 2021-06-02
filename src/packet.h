@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2021, OARC, Inc.
  * Copyright (c) 2019, DENIC eG
  * All rights reserved.
  *
@@ -27,6 +27,12 @@
 
 class Packet {
 private:
+#if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+    Packet& operator=(const Packet& other);
+    Packet(Packet &&other) noexcept;
+    Packet const & operator=(Packet &&other);
+#endif
+
     unsigned char* buffer;
     int            buffersize;
     int            payload_size;

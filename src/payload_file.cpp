@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2021, OARC, Inc.
  * Copyright (c) 2019, DENIC eG
  * All rights reserved.
  *
@@ -105,6 +105,7 @@ void PayloadFile::loadAndCompile(ppl7::File& ff)
                 validLinesInQueryFile++;
             } catch (...) {
                 // ignore invalid queries
+                continue;
             }
         } catch (const ppl7::EndOfFileException&) {
             if (validLinesInQueryFile == 0) {

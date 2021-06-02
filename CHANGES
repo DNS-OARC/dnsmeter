@@ -1,3 +1,23 @@
+2021-06-02 Jerry Lundström
+
+    Release 1.0.2
+
+    This release fixes an issue with source port being static when only
+    using `-q` to generate traffic from one host/IP. The source port is
+    now randomized for every DNS query.
+
+    Other changes is mainly about build system, packages and fixed issues
+    detected by code analysis tools.
+
+    05000cc Typo, random source port
+    6a71707 Coverage
+    1c724ce SonarCloud
+    0776d20 Badges
+    c274884 LGTM
+    5a12c61 COPR
+    f77efed Build dependency
+    a359b66 iconv
+
 2019-10-07 Jerry Lundström
 
     Release 1.0.1

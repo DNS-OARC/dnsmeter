@@ -1,4 +1,4 @@
-# Copyright (c) 2019, OARC, Inc.
+# Copyright (c) 2019-2021, OARC, Inc.
 # Copyright (c) 2019, DENIC eG
 # All rights reserved.
 #
@@ -18,15 +18,16 @@
 # along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
 
 MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
-CLEANFILES = dnsmeter.1 $(srcdir)/pplib/include/ppl7-config.h \
+DISTCLEANFILES = $(srcdir)/pplib/include/ppl7-config.h \
   $(srcdir)/pplib/release/libppl7.a
+CLEANFILES = dnsmeter.1 *.gcda *.gcno *.gcov
 
-SUBDIRS =
+SUBDIRS = test
 
 AM_CXXFLAGS = -I$(srcdir) \
   -I$(top_srcdir) \
   -I$(srcdir)/pplib/include \
-  $(PTHREAD_CFLAGS)
+  $(PTHREAD_CFLAGS) $(ICONV_CFLAGS)
 
 bin_PROGRAMS = dnsmeter
 
@@ -36,7 +37,8 @@ dnsmeter_SOURCES = dns_receiver_thread.cpp dns_sender.cpp \
 dist_dnsmeter_SOURCES = dns_receiver_thread.h dns_sender.h \
   dns_sender_thread.h exceptions.h packet.h payload_file.h query.h \
   raw_socket_receiver.h raw_socket_sender.h system_stat.h
-dnsmeter_LDADD = $(PTHREAD_LIBS) $(srcdir)/pplib/release/libppl7.a
+dnsmeter_LDADD = $(PTHREAD_LIBS) $(ICONV_LIBS) \
+  $(srcdir)/pplib/release/libppl7.a
 
 BUILT_SOURCES = pplib/include/ppl7-config.h
 
@@ -60,6 +62,13 @@ dnsmeter.1: dnsmeter.1.in Makefile
 -e 's,[@]PACKAGE_URL[@],$(PACKAGE_URL),g' \
 -e 's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' \
 < $(srcdir)/dnsmeter.1.in > dnsmeter.1
+
+if ENABLE_GCOV
+gcov-local:
+	for src in $(dnsmeter_SOURCES); do \
+	  gcov -l -r -s "$(srcdir)" "$$src"; \
+	done
+endif
 
 EXTRA_DIST = dnsmeter.1.in \
   pplib/Makefile.in \

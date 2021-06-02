@@ -1,5 +1,5 @@
 Name:           dnsmeter
-Version:        1.0.1
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        DNS performance and infrastructure testing
 Group:          Productivity/Networking/DNS/Utilities
@@ -25,6 +25,7 @@ BuildRequires:  libidn2-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libpcap-devel
 BuildRequires:  pcre-devel
+BuildRequires:  gettext-devel
 
 %description
 DNSMeter is a tool for testing performance of nameserver and/or
@@ -79,6 +80,22 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 02 2021 Jerry Lundström <lundstrom.jerry@gmail.com> 1.0.2-1
+- Release 1.0.2
+  * This release fixes an issue with source port being static when only
+    using `-q` to generate traffic from one host/IP. The source port is
+    now randomized for every DNS query.
+  * Other changes is mainly about build system, packages and fixed issues
+    detected by code analysis tools.
+  * Commits:
+    05000cc Typo, random source port
+    6a71707 Coverage
+    1c724ce SonarCloud
+    0776d20 Badges
+    c274884 LGTM
+    5a12c61 COPR
+    f77efed Build dependency
+    a359b66 iconv
 * Mon Oct 07 2019 Jerry Lundström <lundstrom.jerry@gmail.com> 1.0.1-1
 - Release 1.0.1
   * This release fixes a few minor bugs and a dependency issue which made

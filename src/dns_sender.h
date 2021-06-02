@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2021, OARC, Inc.
  * Copyright (c) 2019, DENIC eG
  * All rights reserved.
  *
@@ -29,6 +29,13 @@
 #define __dnsmeter_dns_sender_h
 
 class DNSSender {
+private:
+#if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+    DNSSender& operator=(const DNSSender& other);
+    DNSSender(DNSSender &&other) noexcept;
+    DNSSender const & operator=(DNSSender &&other);
+#endif
+
 public:
     class Results {
     public:

@@ -3,12 +3,12 @@ Upstream-Name: dnsmeter
 Source: https://github.com/DNS-OARC/dnsmeter
 
 Files: *
-Copyright: 2019 OARC, Inc.
+Copyright: 2019-2021 OARC, Inc.
            2019 DENIC eG
 License: GPLv3
 
 Files: debian/*
-Copyright: 2019 Jerry Lundström <lundstrom.jerry@gmail.com>
+Copyright: 2021 Jerry Lundström <lundstrom.jerry@gmail.com>
 License: BSD-3-Clause
 
 Files: src/pplib/*

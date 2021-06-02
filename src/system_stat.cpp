@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2021, OARC, Inc.
  * Copyright (c) 2019, DENIC eG
  * All rights reserved.
  *
@@ -45,9 +45,8 @@
 static void sampleCpuUsage(SystemStat::Cpu& stat)
 {
     FILE* fp = fopen("/proc/stat", "r");
-    if (5 != fscanf(fp, "%*s %d %d %d %d %d", &stat.user, &stat.nice, &stat.system, &stat.idle, &stat.iowait)) {
-
-        fclose(fp);
+    if (fscanf(fp, "%*s %d %d %d %d %d", &stat.user, &stat.nice, &stat.system, &stat.idle, &stat.iowait) != 5) {
+        // ignore
     }
     fclose(fp);
 }

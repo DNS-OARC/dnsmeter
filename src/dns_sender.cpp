@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2021, OARC, Inc.
  * Copyright (c) 2019, DENIC eG
  * All rights reserved.
  *
@@ -133,7 +133,7 @@ DNSSender::Results operator-(const DNSSender::Results& second, const DNSSender::
         r.counter_errorcodes[i] = second.counter_errorcodes[i] - first.counter_errorcodes[i];
     r.rtt_total                 = second.rtt_total - first.rtt_total;
     if (r.counter_received)
-        r.rtt_avg = r.rtt_total / r.counter_received;
+        r.rtt_avg = r.rtt_total / r.counter_received; //NOSONAR
     else
         r.rtt_avg = 0.0;
     r.rtt_min     = second.rtt_min - first.rtt_min;
@@ -416,7 +416,7 @@ void DNSSender::showCurrentStats(ppl7::ppl_time_t start_time)
 
 void DNSSender::calcTimeslice(int queryrate)
 {
-    Timeslices = (1000.0f / queryrate) * ThreadCount;
+    Timeslices = (1000.0f / queryrate) * ThreadCount; //NOSONAR
     //if (Zeitscheibe<1.0f) Zeitscheibe=1.0f;
     if (Timeslices < 0.1f)
         Timeslices = 0.1f;
@@ -483,7 +483,7 @@ void DNSSender::getResults(DNSSender::Results& result)
         result.bytes_received                     = counter.bytes_rcv;
         result.rtt_total                          = counter.rtt_total;
         if (counter.num_pkgs)
-            result.rtt_avg = counter.rtt_total / counter.num_pkgs;
+            result.rtt_avg = counter.rtt_total / counter.num_pkgs; //NOSONAR
         else
             result.rtt_avg = 0.0;
         result.rtt_min     = counter.rtt_min;

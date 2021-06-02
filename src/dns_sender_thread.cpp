@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2021, OARC, Inc.
  * Copyright (c) 2019, DENIC eG
  * All rights reserved.
  *
@@ -158,6 +158,8 @@ void DNSSenderThread::sendPacket()
                     pkt.randomSourceIP(spoofing_net_start, spoofing_net_size);
                     pkt.randomSourcePort();
                 }
+            } else {
+                pkt.randomSourcePort();
             }
             pkt.setDnsId(getQueryTimestamp());
             ssize_t n = Socket.send(pkt);
@@ -173,7 +175,9 @@ void DNSSenderThread::sendPacket()
             }
             return;
         } catch (const UnknownRRType& exp) {
+            continue;
         } catch (const InvalidDNSQuery& exp) {
+            continue;
         }
     }
 }
