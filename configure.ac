@@ -1,4 +1,4 @@
-# Copyright (c) 2019, OARC, Inc.
+# Copyright (c) 2019-2021, OARC, Inc.
 # Copyright (c) 2019, DENIC eG
 # All rights reserved.
 #
@@ -18,7 +18,7 @@
 # along with dnsmeter.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ(2.69)
-AC_INIT([dnsmeter], [1.0.1], [admin@dns-oarc.net], [dnsmeter], [https://github.com/DNS-OARC/dnsmeter/issues])
+AC_INIT([dnsmeter], [1.0.2], [admin@dns-oarc.net], [dnsmeter], [https://github.com/DNS-OARC/dnsmeter/issues])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADER([src/config.h])
