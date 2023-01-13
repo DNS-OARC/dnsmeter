@@ -17,6 +17,9 @@ Features:
 - optimized for high amount of packets, on an Intel(R) Xeon(R) CPU E5-2430 v2 @ 2.50GHz it can generate more than 900.000 packets per second
 - runs on Linux and FreeBSD
 
+NOTE:
+- Only IPv4 is support
+
 ## Dependencies
 
 `dnsmeter` requires a couple of libraries beside a normal C++ compiling
