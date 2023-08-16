@@ -39,7 +39,7 @@ apt-get install -y libssl-dev libbz2-dev libidn2-dev zlib1g-dev libpcap-dev libp
 
 NOTE: If your system does not have `libidn2-dev`, please use `libidn11-dev` instead.
 
-To install the dependencies under CentOS (with EPEL enabled):
+To install the dependencies under CentOS (with EPEL/PowerTools enabled):
 ```
 yum install -y openssl-devel bzip2-devel libidn2-devel zlib-devel libpcap-devel pcre-devel gettext-devel
 ```
