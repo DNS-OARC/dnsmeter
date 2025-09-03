@@ -6,9 +6,9 @@ Build-Depends: debhelper (>= 10), build-essential, automake, autoconf,
  libtool, libssl-dev, libbz2-dev, libidn2-dev | libidn11-dev,
  zlib1g-dev, libpcap-dev, libpcre3-dev, gettext
 Standards-Version: 3.9.4
-Homepage: https://github.com/DNS-OARC/dnsmeter
-Vcs-Git: https://github.com/DNS-OARC/dnsmeter.git
-Vcs-Browser: https://github.com/DNS-OARC/dnsmeter
+Homepage: https://codeberg.org/DNS-OARC/dnsmeter
+Vcs-Git: https://codeberg.org/DNS-OARC/dnsmeter.git
+Vcs-Browser: https://codeberg.org/DNS-OARC/dnsmeter
 
 Package: dnsmeter
 Architecture: any
