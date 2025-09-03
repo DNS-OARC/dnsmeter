@@ -75,7 +75,7 @@ files, this will require a build environment with autoconf, automake and
 libtool to be installed.
 
 ```
-git clone https://github.com/DNS-OARC/dnsmeter.git
+git clone https://codeberg.org/DNS-OARC/dnsmeter.git
 cd dnsmeter
 git submodule update --init
 ./autogen.sh
