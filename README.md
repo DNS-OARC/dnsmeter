@@ -1,3 +1,5 @@
+# NOTE: Moved to https://codeberg.org/DNS-OARC/dnsmeter
+
 # dnsmeter
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/DNS-OARC/dnsmeter.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/DNS-OARC/dnsmeter/alerts/) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dns-oarc%3Adnsmeter&metric=bugs)](https://sonarcloud.io/dashboard?id=dns-oarc%3Adnsmeter) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dns-oarc%3Adnsmeter&metric=security_rating)](https://sonarcloud.io/dashboard?id=dns-oarc%3Adnsmeter)
